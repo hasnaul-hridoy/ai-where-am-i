@@ -1,0 +1,110 @@
+---
+/**
+ * FieldGrid.astro
+ * Filterable 4-column grid of field cards.
+ * Hover or click a card to see a popup with detail text.
+ * Category filter buttons at the top.
+ */
+import { fields } from '../../data/fields';
+---
+
+<div class="field-grid-wrapper">
+  <!-- Category filter legend -->
+  <div class="field-legend" id="field-legend" role="group" aria-label="Filter by category">
+    <button class="field-legend__item is-active" data-filter="all">
+      <span class="field-legend__dot" style="background: #8A9A85;"></span>
+      All fields
+    </button>
+    <button class="field-legend__item" data-filter="life">
+      <span class="field-legend__dot" style="background: #2B7A6F;"></span>
+      Life Sciences
+    </button>
+    <button class="field-legend__item" data-filter="physical">
+      <span class="field-legend__dot" style="background: #1A2818;"></span>
+      Physical Sciences
+    </button>
+    <button class="field-legend__item" data-filter="social">
+      <span class="field-legend__dot" style="background: #C47A50;"></span>
+      Humanities &amp; Social
+    </button>
+  </div>
+
+  <!-- Card grid — populated by JS below -->
+  <div class="field-grid" id="field-grid" role="list"></div>
+</div>
+
+<script>
+  // Pass field data to the client via a script tag
+  // (Astro serialises it automatically from the import above)
+  const fields = [
+    { name: 'Drug Discovery',    icon: '💊', category: 'life',     shortDesc: 'Novel antibiotic from 107M compounds', year: '2020', detail: 'A neural network trained on 2,335 molecules screened 107 million candidates and found halicin — an antibiotic that works through a mechanism no existing drug uses. Bacteria could not develop resistance after 30 days of exposure.' },
+    { name: 'Protein Folding',   icon: '🧬', category: 'life',     shortDesc: '200M+ structures by AlphaFold',         year: '2021', detail: "DeepMind's AlphaFold2 solved a 50-year grand challenge by predicting 3D protein structures with atomic accuracy. It has since mapped over 200 million structures across all known organisms." },
+    { name: 'Genomics',          icon: '🧪', category: 'life',     shortDesc: 'Non-coding DNA variant interpretation', year: '2023', detail: "AI models now interpret the 98% of the genome that doesn't code for proteins. These models predict which genetic variants cause disease — previously one of the hardest problems in medicine." },
+    { name: 'Medical Imaging',   icon: '🩺', category: 'life',     shortDesc: 'Retinal scans detect 50+ diseases',     year: '2018', detail: 'CNNs analyzing retinal photographs detect diabetic retinopathy, cardiovascular risk, and over 50 conditions — often matching or exceeding specialist accuracy.' },
+    { name: 'Materials Science', icon: '⭐', category: 'physical', shortDesc: '381K novel stable crystals',            year: '2023', detail: "GNoME used graph neural networks to discover 2.2 million stable crystal structures — 8x the entire previously known catalogue. 736 have been confirmed in labs worldwide." },
+    { name: 'Weather',           icon: '⛅', category: 'physical', shortDesc: '10-day forecast in under a minute',    year: '2023', detail: "GraphCast, trained on 39 years of historical data, beats the world's best physics-based model on 90%+ of targets. Full global forecast in under a minute on a single chip." },
+    { name: 'Fusion Energy',     icon: '⚡', category: 'physical', shortDesc: 'RL controls tokamak plasma',           year: '2022', detail: 'DeepMind trained reinforcement learning controllers that maintain plasma containment in tokamak fusion reactors — a control problem too fast for human-designed systems.' },
+    { name: 'Particle Physics',  icon: '🔬', category: 'physical', shortDesc: 'Accelerator beam optimization',        year: '2020', detail: 'AI optimizes accelerator beam configurations in real-time, reducing tuning time from hours to minutes at facilities including CERN.' },
+    { name: 'Climate',           icon: '🌍', category: 'social',   shortDesc: 'Satellite deforestation tracking',     year: '2021', detail: 'Computer vision models classify satellite imagery to track deforestation and wildlife migration at continental scales.' },
+    { name: 'Legal Analysis',    icon: '⚖️', category: 'social',   shortDesc: 'Case outcome prediction',             year: '2023', detail: 'NLP models predict court case outcomes, extract contract clauses, and flag regulatory risk — processing thousands of documents in hours.' },
+    { name: 'Ancient Languages', icon: '🏛️', category: 'social',   shortDesc: 'Damaged tablet reconstruction',       year: '2023', detail: 'AI reconstructed missing text on 2,600-year-old Akkadian tablets and identified that the Dead Sea Scrolls had two distinct scribes.' },
+    { name: 'Music',             icon: '🎵', category: 'social',   shortDesc: 'AI co-composition & style transfer',  year: '2023', detail: 'Generative models compose original music and help human composers explore harmonic possibilities they would not have tried independently.' },
+  ] as const;
+
+  type Field = typeof fields[number];
+
+  function renderGrid(filter: string) {
+    const grid = document.getElementById('field-grid')!;
+    grid.innerHTML = '';
+
+    const filtered = filter === 'all'
+      ? [...fields]
+      : fields.filter(f => f.category === filter);
+
+    filtered.forEach((field, i) => {
+      const card = document.createElement('div');
+      card.className = `field-card ${field.category}`;
+      card.setAttribute('role', 'listitem');
+      card.style.opacity = '0';
+      card.style.transform = 'translateY(10px)';
+
+      card.innerHTML = `
+        <div class="field-card__icon" aria-hidden="true">${field.icon}</div>
+        <div class="field-card__name">${field.name}</div>
+        <div class="field-card__desc">${field.shortDesc}</div>
+        <div class="field-card__year">${field.year}</div>
+        <div class="field-card__popup" role="tooltip">${field.detail}</div>
+      `;
+
+      // Click to toggle expanded state (for touch / keyboard)
+      card.addEventListener('click', () => {
+        // Close other expanded cards
+        document.querySelectorAll('.field-card.is-expanded').forEach(other => {
+          if (other !== card) other.classList.remove('is-expanded');
+        });
+        card.classList.toggle('is-expanded');
+      });
+
+      grid.appendChild(card);
+
+      // Staggered fade-in
+      setTimeout(() => {
+        card.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+        card.style.opacity = '1';
+        card.style.transform = 'translateY(0)';
+      }, i * 50);
+    });
+  }
+
+  // Legend filter clicks
+  document.querySelectorAll('.field-legend__item').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.field-legend__item').forEach(b => b.classList.remove('is-active'));
+      btn.classList.add('is-active');
+      renderGrid((btn as HTMLElement).dataset.filter ?? 'all');
+    });
+  });
+
+  // Initial render
+  renderGrid('all');
+</script>

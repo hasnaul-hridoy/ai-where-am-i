@@ -1,0 +1,117 @@
+/*
+ * ============================================================
+ * DESIGN TOKENS
+ * Single source of truth for all colors, fonts, spacing, radii
+ * ============================================================
+ */
+
+:root {
+
+  /* ---- Color Palette: Sage Tendril ---- */
+
+  /* Backgrounds */
+  --color-bg:          #F0F2EC;   /* Page background */
+  --color-bg-content:  #FAFBF6;   /* Main content area */
+  --color-bg-card:     #FFFFFF;   /* Card surfaces */
+
+  /* Text */
+  --color-text:        #1A2818;   /* Headings */
+  --color-text-body:   #2A3528;   /* Body paragraphs */
+  --color-text-muted:  #5A7058;   /* Secondary/muted text */
+  --color-text-light:  #8A9A85;   /* Labels, metadata */
+
+  /* Borders */
+  --color-border:      #CCD5C4;
+  --color-border-light:#DDE4D8;
+
+  /* Accent (sage green) */
+  --color-accent:       #5A7A58;
+  --color-accent-hover: #4A6A48;
+  --color-accent-light: #EAF0E6;
+
+  /* Sidebar */
+  --color-sidebar-bg:      #5A7A58;
+  --color-sidebar-header:  #3A5038;
+  --color-sidebar-text:    #E8F0E0;
+  --color-sidebar-muted:   #C8DCC0;
+  --color-sidebar-disabled:#A8C0A0;
+
+  /* Header / Footer */
+  --color-header-bg: #3A5038;
+
+  /* Stat cards */
+  --color-stat-bg:   #3A5038;
+  --color-stat-text: #E8F0E0;
+
+  /* Callouts */
+  --color-callout-bg:     #F0F5EC;
+  --color-callout-border: #5A7A58;
+
+  /* Study notes */
+  --color-note-bg:     #EAF0E6;
+  --color-note-border: #8A9A85;
+
+  /* Data viz category colors */
+  --color-life:     #2B7A6F;   /* Life sciences — teal */
+  --color-physical: #1A2818;   /* Physical sciences — forest */
+  --color-social:   #C47A50;   /* Humanities — warm terracotta */
+
+
+  /* ---- Typography ---- */
+
+  --font-display:    'Lilita One', sans-serif;   /* Headings, nav titles */
+  --font-serif:      'Lora', Georgia, serif;     /* Subtitles, quotes */
+  --font-sans:       'Inter', system-ui, sans-serif; /* Body text */
+  --font-mono:       'Source Code Pro', monospace;   /* Labels, code */
+
+  --font-size-xs:   11px;
+  --font-size-sm:   13px;
+  --font-size-base: 17px;
+  --font-size-lg:   19px;
+  --font-size-xl:   24px;
+  --font-size-2xl:  32px;
+  --font-size-3xl:  42px;
+
+  --line-height-tight:  1.25;
+  --line-height-base:   1.75;
+  --line-height-prose:  1.85;
+
+
+  /* ---- Spacing ---- */
+
+  --space-1:   4px;
+  --space-2:   8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;
+  --space-8:  32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+
+  /* ---- Radii ---- */
+
+  --radius-sm:  6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 16px;
+  --radius-full: 9999px;
+
+
+  /* ---- Shadows ---- */
+
+  --shadow-sm: 0 1px 2px rgba(26, 40, 24, 0.06);
+  --shadow-md: 0 4px 12px rgba(26, 40, 24, 0.08);
+  --shadow-lg: 0 8px 24px rgba(26, 40, 24, 0.12);
+  --shadow-sidebar: 0 4px 20px rgba(40, 60, 38, 0.18);
+
+
+  /* ---- Layout ---- */
+
+  --header-height:       56px;
+  --content-frame-width: 70%;     /* 70% of viewport, centered */
+  --sidebar-width:       30%;     /* 30% of content frame */
+  --sidebar-panel-padding: 16px;  /* Space between sidebar wrapper and edge */
+}

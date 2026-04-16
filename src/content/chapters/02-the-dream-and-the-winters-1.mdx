@@ -1,0 +1,100 @@
+---
+title: "The Dream and the Winters"
+part: 2
+partLabel: "Part II — The Roots"
+subtitle: "From Dartmouth to deep learning: sixty years of ambition, failure, and vindication."
+published: true
+---
+
+import ChapterLayout from '../../layouts/ChapterLayout.astro';
+import StatCards from '../../components/StatCards.astro';
+import CalloutQuote from '../../components/CalloutQuote.astro';
+import StudyNote from '../../components/StudyNote.astro';
+import Accordion from '../../components/Accordion.astro';
+import PageNav from '../../components/PageNav.astro';
+
+<ChapterLayout title="The Dream and the Winters" chapterSlug="02-the-dream-and-the-winters">
+<div class="chapter-breadcrumb"><a href="/">AI: Where Am I?</a><span class="sep">&rsaquo;</span><a href="#">Part II — The Roots</a><span class="sep">&rsaquo;</span><span>Chapter 2</span></div>
+<div class="part-badge">Part II — The Roots</div>
+<h1 class="chapter-title">The Dream and the Winters</h1>
+<p class="chapter-subtitle">From Dartmouth to deep learning: sixty years of ambition, failure, and vindication.</p>
+<div class="chapter-title-rule"></div>
+<div class="prose">
+
+<p class="drop-cap">In 1950, Alan Turing published a paper that opened with a sentence most philosophers would not have written. He asked whether machines can think, then immediately discarded the question as too vague. In its place, he proposed a test: if a human interrogator could not distinguish a machine from a human through text, the machine should be considered intelligent for all practical purposes. The paper was careful, rigorous, and almost entirely ignored by the people who would go on to build the field it described.</p>
+
+## The Bet
+
+Six years later, in the summer of 1956, a small group gathered at Dartmouth College in New Hampshire. John McCarthy, Marvin Minsky, Claude Shannon, and Nathaniel Rochester asked for two months and ten researchers to make significant progress on machine intelligence.
+
+<CalloutQuote text="Every aspect of learning or any other feature of intelligence can in principle be so precisely described that a machine can be made to simulate it." />
+
+That belief was wrong in its timeline. The Dartmouth workshop did not produce a thinking machine. What it produced was a research programme and a name: artificial intelligence.
+
+## The First Spring
+
+The decade following Dartmouth was genuine discovery wrapped in excessive optimism. Allen Newell and Herbert Simon built the Logic Theorist, which proved theorems from Whitehead and Russell's *Principia Mathematica*. In 1957, Simon predicted a computer would be world chess champion within ten years.
+
+<StudyNote text="Joseph Weizenbaum's ELIZA (1966) was designed to demonstrate the superficiality of human-computer interaction. His own secretary asked him to leave the room so she could speak to it privately." />
+
+Frank Rosenblatt built the Mark I Perceptron in 1958 — the first machine that learned its own parameters from data. It was a genuine advance. The *New York Times* predicted it would eventually walk, talk, see, and reproduce itself.
+
+## The First Winter
+
+In 1969, Minsky and Papert published *Perceptrons*, proving that single-layer networks could not compute XOR. The limitation was real but narrow. Multi-layer networks could compute XOR and much more. But the field read the proof as a general verdict on neural networks, and funding dried up.
+
+<Accordion question="What is XOR and why did the Perceptrons book cause such damage?" id="accordion-xor">
+  XOR (exclusive-or) returns true when exactly one of two inputs is true. No single straight line can separate the four XOR cases, so a single-layer perceptron cannot learn it. Minsky and Papert proved this rigorously in 1969 — but their proof applied only to single-layer networks. Multi-layer networks could solve XOR trivially. The tragedy was that the field interpreted a narrow mathematical result as a general verdict, and research funding collapsed for over a decade.
+</Accordion>
+
+In 1973, the Lighthill Report led to near-complete elimination of AI funding in the United Kingdom. In the US, DARPA cut its AI budget sharply. Research groups disbanded.
+
+## The Revival That Wasn't
+
+AI's second spring came from expert systems: MYCIN diagnosed bacterial infections, DENDRAL determined molecular structures. By the mid-1980s, expert systems were a billion-dollar industry. But they could not learn. Every new situation required a human expert to write new rules. When returns failed to materialise, the second AI Winter arrived — colder than the first.
+
+<StatCards
+  id="stats-winters"
+  stats={[
+    { text: '1956', label: 'Dartmouth Workshop AI begins' },
+    { text: '1969', label: 'First Winter begins' },
+    { text: '1987', label: 'Second Winter begins' },
+  ]}
+/>
+
+## The People Who Did Not Leave
+
+Geoffrey Hinton did not leave. In 1986, he published a paper in *Nature* with Rumelhart and Williams demonstrating backpropagation could train multi-layer networks. It solved XOR. It should have restarted the field. Instead the vanishing gradient problem made deep networks nearly impossible to train, and enthusiasm faded again.
+
+Yann LeCun deployed convolutional neural networks at the US Postal Service, reading millions of handwritten envelopes per day. The field treated it as engineering, not science.
+
+Yoshua Bengio at the University of Montreal worked on the theoretical foundations. Together, Hinton, LeCun, and Bengio formed a small community that kept the connectionist programme alive through two decades of institutional indifference.
+
+## The Day the Error Halved
+
+Three factors converged: ImageNet (1.2 million labelled images), GPUs (efficient for parallel matrix operations), and technical innovations — ReLU activations that solved the vanishing gradient, dropout that prevented overfitting.
+
+In October 2012, AlexNet entered the ImageNet competition.
+
+<StatCards
+  id="stats-alexnet"
+  stats={[
+    { number: 15.3, display: '%', divide: 1, decimals: 1, label: 'AlexNet error rate' },
+    { number: 26.2, display: '%', divide: 1, decimals: 1, label: 'Second place error rate' },
+    { number: 10.9, display: 'pt', divide: 1, decimals: 1, label: 'Gap between 1st and 2nd' },
+  ]}
+/>
+
+Within two years, every competitive entry used deep neural networks. The hand-engineered approach that had dominated computer vision for a decade was abandoned almost overnight.
+
+## The Vindication
+
+In 2018, the Turing Award went jointly to Hinton, LeCun, and Bengio. These were researchers who had worked for decades on an approach the mainstream considered discredited. Their persistence was grounded in a specific belief: that the brain is a neural network, that intelligence arises from learned representations, and that the right combination of data, computation, and architectural insight would eventually prove the approach viable.
+
+They were right. And the proof was not a theoretical argument — it was a 10.9 percentage point margin on an empirical benchmark.
+
+The story of AI's winters reveals something important: every technique that matters today was built on mathematical foundations that predate the computers it runs on. To understand why deep learning works, you need those foundations. That is where we go next.
+
+</div>
+<PageNav prev={{ slug: "01-the-ai-you-think-you-know", number: 1, title: "The AI You Think You Know", part: 1, published: true }} next={{ slug: "03-the-soil", number: 3, title: "The Soil", part: 2, published: true }} />
+</ChapterLayout>

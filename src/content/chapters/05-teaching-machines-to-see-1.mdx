@@ -1,0 +1,88 @@
+---
+title: "Teaching Machines to See"
+part: 3
+partLabel: "Part III — The Branches"
+subtitle: "How convolutional neural networks learned to read images — and transformed medicine, science, and everyday life."
+published: true
+---
+
+import ChapterLayout from '../../layouts/ChapterLayout.astro';
+import StatCards from '../../components/StatCards.astro';
+import CalloutQuote from '../../components/CalloutQuote.astro';
+import StudyNote from '../../components/StudyNote.astro';
+import Accordion from '../../components/Accordion.astro';
+import PageNav from '../../components/PageNav.astro';
+
+<ChapterLayout title="Teaching Machines to See" chapterSlug="05-teaching-machines-to-see">
+<div class="chapter-breadcrumb"><a href="/">AI: Where Am I?</a><span class="sep">&rsaquo;</span><a href="#">Part III — The Branches</a><span class="sep">&rsaquo;</span><span>Chapter 5</span></div>
+<div class="part-badge">Part III — The Branches</div>
+<h1 class="chapter-title">Teaching Machines to See</h1>
+<p class="chapter-subtitle">How convolutional neural networks learned to read images — and transformed medicine, science, and everyday life.</p>
+<div class="chapter-title-rule"></div>
+<div class="prose">
+
+<p class="drop-cap">A photograph of a cat is, to a computer, a grid of numbers. A 256-by-256 color image contains 196,608 values — one for each pixel in each of three color channels. None of those values says "cat." The information that makes the image recognizable exists not in individual pixels but in relationships between them. A pixel in isolation carries almost no information about what the image depicts.</p>
+
+Before deep learning, computer vision relied on hand-engineered features. Researchers designed algorithms to detect edges, corners, gradients of texture, distributions of color. These features were fed into a classifier that learned to sort images into categories. The approach worked, but it required a human expert to decide which features to extract for each task. A system built to recognize faces would not work for cars without redesigning the pipeline.
+
+## The Convolution Trick
+
+<StudyNote text="In 1962, Hubel and Wiesel discovered that neurons in the cat visual cortex respond to specific orientations of edges at specific locations — not to the whole image. Their work won the Nobel Prize in Physiology or Medicine in 1981." />
+
+The answer came from neuroscience. Yann LeCun applied Hubel and Wiesel's discovery to neural networks. Instead of connecting every input pixel to every neuron, he designed layers that applied small filters — typically 3×3 or 5×5 grids of weights — to local patches of the image. The same filter slid across the image, producing a feature map indicating where the pattern appeared.
+
+Convolution gave the network two decisive properties. **Weight sharing:** the same filter applied everywhere reduced parameters dramatically. **Translation invariance:** a feature detected in one corner was detected by the same filter in any corner.
+
+<Accordion question="What is a convolution, exactly?" id="accordion-conv">
+  A convolution is a mathematical operation where a small filter (grid of numbers) slides across an image one patch at a time. At each position, it multiplies each filter value by the corresponding pixel value and sums the results. If the filter is designed to detect horizontal edges (high values at the top, negative values at the bottom), it produces a high output wherever a horizontal edge appears and near-zero output elsewhere. The network learns these filters during training — nobody programs them. The first layer typically learns edge detectors; deeper layers learn textures, shapes, and eventually object parts.
+</Accordion>
+
+## LeNet: Proof of Concept
+
+LeCun's first major implementation, LeNet, was designed for handwriting recognition. The United States Postal Service deployed it to read handwritten zip codes. Banks used it to process handwritten cheques, handling millions of documents per day. By engineering standards, it was a success.
+
+The machine learning community treated it as exactly that — an engineering achievement, not a scientific breakthrough. The dominant methods of the 1990s had stronger theoretical guarantees. Neural networks were seen as black boxes that happened to work on one task.
+
+## The Move 37 Moment: The Chasm
+
+In October 2012, the ImageNet competition produced a result that no one expected.
+
+<StatCards
+  id="stats-alexnet-vision"
+  stats={[
+    { number: 15.3, display: '%', divide: 1, decimals: 1, label: 'AlexNet top-5 error' },
+    { number: 26.2, display: '%', divide: 1, decimals: 1, label: 'Second place top-5 error' },
+    { number: 1000, display: '', divide: 1, label: 'Categories classified' },
+  ]}
+/>
+
+AlexNet used raw pixels, two NVIDIA GPUs, and eight layers. The 10.9 percentage point gap between first and second place was not a marginal improvement. In a field where annual progress was measured in fractions of a point, it was a discontinuity. Within two years, every competitive entry used deep convolutional networks.
+
+<CalloutQuote text="Researchers who had spent careers building feature descriptors had to learn an entirely new set of methods. The transition was not gradual. It was abrupt and complete." />
+
+## Deeper, Wider, Stranger
+
+After AlexNet, the competition became a race in depth. VGGNet (2014) demonstrated that stacking small 3×3 filters deep consistently outperformed shallower architectures. GoogLeNet introduced parallel filter sizes at each layer. ResNet (2015) solved the depth problem with skip connections — shortcuts that allowed gradients to flow directly through the network.
+
+<StatCards
+  id="stats-resnet"
+  stats={[
+    { text: '8', label: 'AlexNet layers (2012)' },
+    { text: '19', label: 'VGGNet layers (2014)' },
+    { text: '152', label: 'ResNet layers (2015)' },
+  ]}
+/>
+
+ResNet surpassed human-level performance on the ImageNet benchmark.
+
+## Beyond Classification
+
+The convolutional architecture adapted to almost any task involving spatial data. In dermatology, a CNN trained on 129,450 clinical images classified skin lesions with accuracy matching board-certified dermatologists (Esteva et al., 2017). By 2020, the US Food and Drug Administration had approved more than 60 AI-enabled imaging devices for clinical use.
+
+The convolutional neural network had travelled from a handwriting recognition system at Bell Labs to a clinical diagnostic tool in under two decades.
+
+CNNs could see — classify an image, locate an object, segment a scene. But images exist at a single moment in time. Many problems, from understanding language to predicting weather, involve sequences where order matters and context stretches across hundreds of steps. Teaching a machine to handle sequences required a different architecture, one with memory. That is where we go next.
+
+</div>
+<PageNav prev={{ slug: "04-the-seed", number: 4, title: "The Seed", part: 2, published: true }} next={{ slug: "06-teaching-machines-to-remember", number: 6, title: "Teaching Machines to Remember", part: 3, published: true }} />
+</ChapterLayout>

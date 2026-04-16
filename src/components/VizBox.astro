@@ -1,0 +1,29 @@
+---
+/**
+ * VizBox.astro
+ * Container wrapper for all interactive visualizations.
+ * Provides consistent header, body, and footer.
+ */
+
+interface Props {
+  title: string;
+  footer?: string;
+  id?: string;
+}
+
+const { title, footer, id } = Astro.props;
+---
+
+<div class="viz-box" id={id}>
+  <div class="viz-box__header">
+    <div class="viz-box__title">{title}</div>
+  </div>
+
+  <div class="viz-box__body">
+    <slot />
+  </div>
+
+  {footer && (
+    <div class="viz-box__footer">{footer}</div>
+  )}
+</div>

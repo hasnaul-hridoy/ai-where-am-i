@@ -1,0 +1,48 @@
+---
+/**
+ * Accordion.astro
+ * Expandable detail section — click to reveal deeper technical content.
+ * Keeps the main prose clean while rewarding curious readers.
+ */
+
+interface Props {
+  question: string;
+  id: string;
+}
+
+const { question, id } = Astro.props;
+---
+
+<div class="accordion" id={id}>
+  <button
+    class="accordion__trigger"
+    aria-expanded="false"
+    aria-controls={`${id}-body`}
+  >
+    <span>{question}</span>
+    <span class="accordion__icon" aria-hidden="true">+</span>
+  </button>
+
+  <div class="accordion__body" id={`${id}-body`} role="region">
+    <div class="accordion__inner">
+      <slot />
+    </div>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll('.accordion__trigger').forEach(trigger => {
+    trigger.addEventListener('click', () => {
+      const accordion = trigger.closest('.accordion') as HTMLElement;
+      const body = accordion.querySelector('.accordion__body') as HTMLElement;
+
+      const isOpen = accordion.classList.contains('is-open');
+
+      accordion.classList.toggle('is-open', !isOpen);
+      trigger.setAttribute('aria-expanded', String(!isOpen));
+
+      // Animate height
+      body.style.maxHeight = isOpen ? '0' : body.scrollHeight + 'px';
+    });
+  });
+</script>

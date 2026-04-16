@@ -1,0 +1,67 @@
+---
+title: "Teaching Machines to Remember"
+part: 3
+partLabel: "Part III — The Branches"
+subtitle: "RNNs, LSTMs, and the problem of learning from sequences."
+published: true
+---
+
+import ChapterLayout from '../../layouts/ChapterLayout.astro';
+import CalloutQuote from '../../components/CalloutQuote.astro';
+import StudyNote from '../../components/StudyNote.astro';
+import Accordion from '../../components/Accordion.astro';
+import PageNav from '../../components/PageNav.astro';
+
+<ChapterLayout title="Teaching Machines to Remember" chapterSlug="06-teaching-machines-to-remember">
+<div class="chapter-breadcrumb"><a href="/">AI: Where Am I?</a><span class="sep">&rsaquo;</span><a href="#">Part III — The Branches</a><span class="sep">&rsaquo;</span><span>Chapter 6</span></div>
+<div class="part-badge">Part III — The Branches</div>
+<h1 class="chapter-title">Teaching Machines to Remember</h1>
+<p class="chapter-subtitle">RNNs, LSTMs, and the problem of learning from sequences.</p>
+<div class="chapter-title-rule"></div>
+<div class="prose">
+
+<p class="drop-cap">In November 2016, Google replaced its entire production translation system overnight. The old system broke sentences into fragments and reassembled them using probability tables. The new system — Google Neural Machine Translation — read an entire sentence in one language, encoded its meaning in a numerical representation, and decoded that representation into another language. Users noticed the difference immediately. Translations that had been stilted and fragmentary became fluid.</p>
+
+The architecture that made this possible was built on a type of neural network that could process sequences: data where order matters and context stretches across many steps. Images are spatial. Language is temporal. Teaching a machine to handle language required giving it something convolutional networks lacked: memory.
+
+## The Problem with Sequences
+
+A standard neural network processes each input independently. Show it an image, it produces a classification. Show it a second image, it has no memory of the first. For tasks like image classification, this is fine. For language, it is fatal.
+
+<CalloutQuote text="The meaning of a word depends on the words that came before it. 'Bank' means something different after 'river' than after 'investment.'" />
+
+Recurrent neural networks solved this by adding a loop. At each step in a sequence, the network took two inputs: the current element and its own output from the previous step. This feedback connection gave the network a form of short-term memory. In theory, this was sufficient. In practice, it broke down over long sequences — the same vanishing gradient problem appeared again, now propagating backward through time.
+
+## The Move 37 Moment: The Memory Cell
+
+<StudyNote text="Hochreiter and Schmidhuber's LSTM paper (1997) was 46 pages long, dense with mathematics, and largely ignored for a decade. The field was focused on support vector machines." />
+
+In 1997, Sepp Hochreiter and Jürgen Schmidhuber published the architecture that solved this: Long Short-Term Memory, or LSTM. The design was built around a single idea: give the network an explicit memory cell whose contents are protected from the vanishing gradient by a system of gates.
+
+An LSTM cell has three gates. The **forget gate** decides what to discard. The **input gate** decides what new information to store. The **output gate** decides what to expose to the rest of the network. Each gate is a small neural network that learns, during training, when to open and when to close. The cell state flows through the network like a conveyor belt, carrying information across hundreds or thousands of time steps.
+
+<Accordion question="How does an LSTM gate actually work?" id="accordion-lstm">
+  Each gate in an LSTM is a small neural network that outputs a value between 0 and 1. A gate output of 0 means "block everything" — don't let this information through. A gate output of 1 means "let everything through." These values are learned during training based on what the task actually requires. For a sentiment analysis task, the forget gate might learn to discard adjectives once it has processed the noun they modify. For a translation task, the input gate might learn to store subject information that won't be needed for many steps. The cell state itself is modified by multiplying it by the forget gate and adding new information from the input gate — allowing gradients to flow backward through time without shrinking exponentially.
+</Accordion>
+
+## Words as Vectors
+
+While LSTM solved the memory problem, Word2Vec (Mikolov et al., 2013) solved the representation problem for language. The training task was simple: given a word, predict the words that appear near it in a large corpus. A model trained on this task, with no information about grammar or meaning, learned to place words with similar meanings at nearby positions in a high-dimensional space.
+
+More striking, the space captured relational structure: *king − man + woman ≈ queen*. *Paris − France + Italy ≈ Rome*. Semantic relationships that humans learn over years of language use were discovered by a model that did nothing but predict context.
+
+## The Encoder-Decoder Architecture
+
+Combining LSTM with word embeddings produced the architecture that powered Google's translation system. An encoder LSTM read the input sentence and compressed its meaning into a fixed vector. A decoder LSTM generated the output sentence from that vector.
+
+In 2014, Dzmitry Bahdanau added attention: instead of forcing the entire input into a single vector, the decoder could look back at every position in the input and weight them differently for each output word. This solved the bottleneck of compressing long sentences and significantly improved translation quality.
+
+## Beyond Translation
+
+LSTM and its variants found applications wherever data arrived as sequences. In biology, protein sequences became inputs to models that predicted function and identified genetic variants. In finance, LSTM models learned patterns in time-series data. In medicine, they found patterns in electronic health records spanning years of patient history.
+
+But the architecture had a structural limitation: recurrent networks process sequences one step at a time. Each step depends on the previous. This sequential dependency made training slow — the computation could not be parallelised across time steps. The solution was an architecture that could process an entire sequence in parallel while still capturing relationships between distant elements. That architecture is next.
+
+</div>
+<PageNav prev={{ slug: "05-teaching-machines-to-see", number: 5, title: "Teaching Machines to See", part: 3, published: true }} next={{ slug: "07-teaching-machines-to-decide", number: 7, title: "Teaching Machines to Decide", part: 3, published: true }} />
+</ChapterLayout>

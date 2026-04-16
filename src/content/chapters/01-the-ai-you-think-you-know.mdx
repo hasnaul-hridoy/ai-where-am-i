@@ -1,0 +1,180 @@
+---
+# Chapter 1 frontmatter
+title: "The AI You Think You Know"
+part: 1
+partLabel: "Part I — Foundations"
+subtitle: "Why the most important AI breakthroughs are the ones you've never heard of."
+published: true
+---
+
+import ChapterLayout from '../../layouts/ChapterLayout.astro';
+import StatCards from '../../components/StatCards.astro';
+import CalloutQuote from '../../components/CalloutQuote.astro';
+import StudyNote from '../../components/StudyNote.astro';
+import Accordion from '../../components/Accordion.astro';
+import VizBox from '../../components/VizBox.astro';
+import PageNav from '../../components/PageNav.astro';
+import IcebergChart from '../../components/interactive/IcebergChart.astro';
+import FunnelChart from '../../components/interactive/FunnelChart.astro';
+import FieldGrid from '../../components/interactive/FieldGrid.astro';
+
+<ChapterLayout title="The AI You Think You Know" chapterSlug="01-the-ai-you-think-you-know">
+
+<div class="chapter-breadcrumb">
+  <a href="/">AI: Where Am I?</a>
+  <span class="sep">&rsaquo;</span>
+  <a href="#">Part I</a>
+  <span class="sep">&rsaquo;</span>
+  <span>Chapter 1</span>
+</div>
+
+<div class="part-badge">Part I &mdash; Foundations</div>
+<h1 class="chapter-title">The AI You Think You Know</h1>
+<p class="chapter-subtitle">Why the most important AI breakthroughs are the ones you've never heard of.</p>
+<div class="chapter-title-rule"></div>
+
+<div class="prose">
+
+<p class="drop-cap">When we speak of artificial intelligence today, the conversation usually gravitates toward chatbots that draft emails or image generators that fabricate surreal landscapes. We marvel at the conversational cadence of machines, often forgetting that the true revolution is occurring in silence, deep within laboratories and supercomputers. While the world was busy asking AI to write sonnets, scientists were asking it to solve the unsolvable riddles of biology and material science — challenges that had remained stagnant for decades.</p>
+
+When the Pew Research Center asked Americans in 2024 what comes to mind about artificial intelligence, the most common answers were virtual assistants, search engines, and chatbots. Not protein folding. Not materials discovery. Not weather prediction. The machines people pictured sat on desks and lived inside phones.
+
+That picture is not wrong. It is incomplete. And the gap between what most people see and what AI actually does is not small. **It is enormous.**
+
+Here is the uncomfortable part: the AI applications that get the most attention tend to be the ones with the least rigorous evidence behind them. A chatbot that writes plausible-sounding text gets a billion users; a model that discovers a genuinely new antibiotic gets a journal paper. The visibility of an AI application has almost no correlation with its scientific significance.
+
+The chatbot you use at work is the visible tip of an iceberg. Below the waterline, AI is discovering new antibiotics, predicting the weather ten days out in under a minute, and generating crystal structures for materials that have never existed on Earth. Each of these applications draws on a distinct set of techniques with its own history, its own breakthroughs, and its own limitations. Most people have never heard of any of them.
+
+<VizBox
+  title="Most People Only See the Tip"
+  footer="Hover to explore. Size = relative research volume. 3 consumer apps above the waterline. 9+ scientific fields below."
+>
+  <IcebergChart />
+</VizBox>
+
+## What Would You Do?
+
+Imagine you are an infectious disease researcher. It is 2019. The problem on your desk is antibiotic resistance — a crisis the UK government estimated could kill ten million people per year by 2050 if current trends hold, surpassing cancer. The last genuinely new class of antibiotic was discovered decades ago. The traditional pipeline, where chemists design molecules based on known mechanisms and test them one by one, has slowed to a crawl.
+
+You have a library of 2,335 molecules with known antibacterial properties. You also have a database called ZINC15 containing over 107 million commercially available compounds. Most of those compounds have never been tested against bacteria. Nobody knows which of them, if any, might work.
+
+<CalloutQuote text="How do you search 107 million candidates to find the one that kills drug-resistant bacteria through a mechanism no existing antibiotic uses?" />
+
+You could test at random. At typical screening rates, that would take several lifetimes. You could narrow the search by chemical similarity to known antibiotics — but that only finds molecules resembling what already exists, and what already exists is failing. The very approach that got us here — designing drugs based on mechanisms we already understand — cannot find drugs that work through mechanisms we have not yet imagined.
+
+What would you do?
+
+## The Molecule Nobody Imagined
+
+<StudyNote text="Antibiotic resistance is predicted to cause 10 million deaths annually by 2050 if new classes of drugs aren't discovered soon. The last genuinely new class was discovered decades ago." />
+
+In February 2020, a team led by Jonathan Stokes at MIT answered that question with a completely different kind of search. They trained a neural network on those 2,335 molecules, teaching it to recognize which molecular structures would stop *E. coli* from growing. The model did not need to understand biochemistry in the way a human chemist does. It learned its own representation of what makes a molecule antibacterial — patterns that humans didn't even have names for.
+
+Then they pointed the trained model at a drug-repurposing library and let it score every compound. The model flagged a molecule called **halicin** — named after HAL from *2001: A Space Odyssey*. It had been investigated as a diabetes drug and abandoned. Nobody had ever thought to test it as an antibiotic.
+
+Halicin worked. It killed *Clostridioides difficile*, one of the most dangerous hospital-acquired infections. In a mouse wound model, it cleared *Acinetobacter baumannii*, a pathogen the World Health Organization classifies as a critical priority threat. Against 36 strains of carbapenem-resistant bacteria, it showed broad activity.
+
+Then came the real surprise: **how it worked.** Halicin did not use any of the mechanisms that existing antibiotics rely on. It disrupted the pH gradient across bacterial membranes — a completely different approach. When the team tried to breed resistant bacteria by exposing them to halicin for thirty days straight, they could not generate resistance. The molecule was, in a specific and measurable sense, something that conventional drug discovery was not designed to find.
+
+After validating halicin, the team turned the model loose on the full ZINC15 database — all 107 million compounds. It identified 23 candidates predicted to have antibacterial properties unlike any known antibiotic. Eight of those proved active in laboratory tests. A training set of 2,335 molecules had produced a search engine capable of finding genuinely novel chemistry from a database of 107 million.
+
+<VizBox
+  title="Discovery Funnel: The Search for Halicin"
+  footer="Stokes et al., Cell, 2020"
+>
+  <FunnelChart
+    steps={[
+      { label: '107M Candidates', value: '107,000,000', widthPct: 100, color: 'linear-gradient(90deg, #3A5038, #5A7A58)' },
+      { label: '2,335 Screened',   value: '2,335',       widthPct: 18,  color: 'linear-gradient(90deg, #B8942A, #D0B050)' },
+      { label: '23 Validated',     value: '23',          widthPct: 8,   color: 'linear-gradient(90deg, #C47A50, #D8966E)' },
+      { label: '8 Hits',           value: '8',           widthPct: 5,   color: 'linear-gradient(90deg, #4A6A80, #6A8AA0)' },
+    ]}
+  />
+</VizBox>
+
+<Accordion question="How does halicin actually kill bacteria?" id="accordion-halicin">
+  Halicin disrupts the electrochemical gradient across bacterial cell membranes. Unlike traditional antibiotics that target specific proteins, this mechanism attacks a fundamental physical property of the membrane itself — making it extremely difficult for bacteria to evolve resistance through simple mutations. After 30 days of continuous exposure at sub-lethal concentrations, no resistant mutants emerged. The likely explanation: because halicin targets a physical property rather than a single protein, there is no single mutation that can neutralize it.
+</Accordion>
+
+## 381,000 Crystals That Never Existed
+
+If halicin showed what AI could do for biology, a result published three years later showed it could reshape materials science at a scale that was hard to absorb.
+
+In December 2023, a team at Google DeepMind led by Amil Merchant published a project called GNoME — Graph Networks for Materials Exploration. The idea was direct: use a type of neural network designed for molecular structures to predict whether hypothetical crystal arrangements would be stable, verify the best predictions with physics calculations, and repeat. An active learning loop where the AI proposes, physics checks, and the results train a better AI.
+
+Here is the context that makes the numbers hit. Before GNoME, the total catalogue of computationally verified stable crystal structures — built up over more than a decade by hundreds of researchers worldwide — contained roughly 48,000 entries. That number represented the cumulative output of the global materials science community using traditional computational methods.
+
+GNoME predicted 2.2 million new stable structures. Of those, 381,000 were genuinely novel — compositions that had never appeared in any existing database.
+
+<StatCards
+  id="stats-gnome"
+  stats={[
+    { number: 48000,   display: 'K', divide: 1000,    label: 'Known crystals\nbefore GNoME' },
+    { number: 2200000, display: 'M', divide: 1000000, decimals: 1, label: 'New structures\npredicted' },
+    { number: 381000,  display: 'K', divide: 1000,    label: 'Genuinely novel\nentries' },
+  ]}
+/>
+
+By the time the paper was published, 736 of those predictions had already been independently synthesized and confirmed in laboratories around the world. The model had multiplied humanity's catalogue of known stable crystals by a factor of eight. In a single study.
+
+Among the discoveries were candidates for next-generation lithium-ion conductors, solid electrolytes, and layered compounds with potential applications in batteries and energy storage — exactly the materials the clean energy transition needs most.
+
+## A Ten-Day Forecast in Under a Minute
+
+That same month, a second team at Google DeepMind published something comparably disruptive in atmospheric science.
+
+For decades, weather forecasting has depended on numerical weather prediction: solving the equations of fluid dynamics and thermodynamics on a grid covering the entire globe. The European Centre for Medium-Range Weather Forecasts runs one of the most accurate systems in the world — a model called HRES. Producing a single ten-day global forecast takes about an hour on a supercomputer.
+
+Remi Lam and colleagues built GraphCast, a machine learning model trained on 39 years of historical weather data. It learned to predict 227 weather variables across 37 atmospheric layers at over one million grid points. When tested against HRES, GraphCast beat it on more than 90 percent of verification targets — 1,380 tests covering 69 variable-and-altitude combinations evaluated at 20 different lead times up to ten days ahead.
+
+The difference in computational cost was staggering:
+
+<StatCards
+  id="stats-graphcast"
+  stats={[
+    { text: '<1 min', label: 'GraphCast\nsingle chip' },
+    { text: '~1 hr',  label: 'HRES forecast\nsupercomputer' },
+    { number: 90, display: '%+', divide: 1, label: 'Targets where\nGraphCast won' },
+  ]}
+/>
+
+GraphCast did not use the equations of atmospheric physics. It learned the patterns from data alone. That is a fundamentally different kind of weather prediction, one with different strengths and different limitations. The model blurred its predictions at longer lead times and could not simulate conditions absent from the historical record. But for the standard task of medium-range forecasting — the kind that determines whether you carry an umbrella or evacuate a coastline — it worked. And it ran on a single chip in under a minute, compared to an hour on a supercomputer.
+
+## The Numbers Behind the Shift
+
+These three stories — an antibiotic from a database, 381,000 new materials, and a weather model that outpaced the gold standard — are not isolated. They sit within a broader acceleration that the publication data makes hard to ignore.
+
+A 2025 report by Fudan University and Nature Research Intelligence tracked global AI publications over a decade. In 2015, roughly 309,000 AI-related papers were published. By 2024: 954,500. A tripling in nine years, with the growth rate accelerating sharply after 2020. That acceleration was not driven by a single field. It was happening everywhere at once.
+
+The growth was not uniform. Life sciences showed the sharpest climb: AI-related research in biology and medicine went from 8.8 percent of the field in 2015 to 25.3 percent in 2024. Physical sciences surged after 2020. Mathematics research involving AI nearly doubled. The acceleration was not confined to computer science departments. Researchers across every quantitative discipline were adopting these tools and publishing results.
+
+The interactive grid below shows twelve fields where AI is producing published, peer-reviewed results today. These are not speculative applications or startup pitches. Each card represents a domain where AI has produced a measurable outcome documented in a major journal.
+
+<VizBox
+  title="Beyond the Lab: AI Everywhere"
+  footer="Sources: Stokes 2020, Merchant 2023, Lam 2023, Jumper 2021, Degrave 2022"
+>
+  <FieldGrid />
+</VizBox>
+
+## The Iceberg
+
+If you picked up this book thinking AI means chatbots, you are in excellent company. Public understanding of AI is shaped by visible product launches and headline demos, not by the trajectory of the underlying research. The conversational agents and image generators are real and significant. But they occupy a narrow band of what AI has become.
+
+Below the surface, AI is folding proteins, discovering drugs, predicting weather, designing materials, analyzing satellite imagery, reading ancient manuscripts, and optimizing particle accelerators. Each of those applications draws on a distinct set of techniques with its own history, its own breakthroughs, and its own limitations. And most of them have nothing to do with generating text or images.
+
+**That is what this book maps.** Not a list of products. Not a forecast of what is coming. A guide to the territory as it exists right now: the ideas, the methods, the results, and the open questions. We are not here to convince you that AI will change the world. We are here to show you that it already has — in ways you probably haven't seen yet.
+
+Think of it as a tree. The roots are the mathematical foundations — statistics and neural networks — that everything else grows from. The branches are the techniques, each one a distinct way of teaching a machine to learn. The canopy is where those techniques meet real problems: in hospitals, laboratories, courtrooms, and concert halls.
+
+To understand how a model trained on 2,335 molecules could search 107 million candidates and find a genuinely novel antibiotic, you need to understand what a neural network is, how it learns, and why the specific architecture used by Stokes's team was suited to molecular data. Each of those questions has an answer, and the answers connect in ways that are not obvious until you see the whole structure.
+
+To see that structure, we start at the beginning. Not with the latest model. Not with the newest paper. With a summer workshop in 1956 where a small group of mathematicians placed an extraordinary bet: that human intelligence could, in principle, be described precisely enough that a machine could be built to simulate it.
+
+The story of what happened next — the decades of ambition, failure, and eventual vindication — is where we go in Chapter 2.
+
+</div>
+
+<PageNav prev={null} next={{ slug: '02-the-dream-and-the-winters', number: 2, title: 'The Dream and the Winters', part: 2, published: false }} />
+
+</ChapterLayout>

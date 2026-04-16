@@ -1,0 +1,69 @@
+---
+title: "Teaching Machines to Scale"
+part: 3
+partLabel: "Part III — The Branches"
+subtitle: "Scaling laws, emergent capabilities, and what happens when models get bigger."
+published: true
+---
+
+import ChapterLayout from '../../layouts/ChapterLayout.astro';
+import StatCards from '../../components/StatCards.astro';
+import CalloutQuote from '../../components/CalloutQuote.astro';
+import StudyNote from '../../components/StudyNote.astro';
+import Accordion from '../../components/Accordion.astro';
+import PageNav from '../../components/PageNav.astro';
+
+<ChapterLayout title="Teaching Machines to Scale" chapterSlug="09-teaching-machines-to-scale">
+<div class="chapter-breadcrumb"><a href="/">AI: Where Am I?</a><span class="sep">&rsaquo;</span><a href="#">Part III — The Branches</a><span class="sep">&rsaquo;</span><span>Chapter 9</span></div>
+<div class="part-badge">Part III — The Branches</div>
+<h1 class="chapter-title">Teaching Machines to Scale</h1>
+<p class="chapter-subtitle">Scaling laws, emergent capabilities, and what happens when models get bigger.</p>
+<div class="chapter-title-rule"></div>
+<div class="prose">
+
+<p class="drop-cap">In January 2020, researchers at OpenAI published a paper that answered a question the field had been debating informally for years: if you make a neural network bigger and feed it more data, does performance keep improving? The answer was yes — and the relationship was not just positive but predictable, following a precise power law across seven orders of magnitude of model size and dataset scale.</p>
+
+The result meant that if you wanted to know how a model trained on ten times more data would perform, you could calculate it. The uncertainty about whether scale would help had been replaced by a mathematical relationship that could be used to plan experiments and investments.
+
+## The Power Law Nobody Expected
+
+Kaplan et al. (2020) found that language model performance scaled smoothly as a power law with three variables: model size (number of parameters), dataset size (number of training tokens), and compute (number of floating-point operations during training). Doubling any of these produced a consistent, predictable improvement.
+
+<StudyNote text="A power law means that to get the same improvement as going from 1 billion to 2 billion parameters, you would need to go from 2 billion to 4 billion — each doubling becomes harder. But the relationship holds over enormous ranges." />
+
+<StatCards
+  id="stats-scaling"
+  stats={[
+    { text: '117M', label: 'GPT-1 parameters (2018)' },
+    { text: '175B', label: 'GPT-3 parameters (2020)' },
+    { text: '1T+', label: 'Estimated GPT-4 parameters (2023)' },
+  ]}
+/>
+
+The implication was profound. If you wanted a better model, you did not necessarily need a new architecture. You needed more parameters, more data, and more compute — and the improvement would follow.
+
+## Emergent Capabilities
+
+<CalloutQuote text="Some capabilities appear abruptly as models cross certain size thresholds — not gradually improving, but appearing seemingly from nowhere." />
+
+As models scaled, researchers observed something unexpected: capabilities that did not exist at smaller scales appeared discontinuously at larger ones. A model with 7 billion parameters might fail completely at multi-step arithmetic. A model with 70 billion parameters might solve it reliably. The capability did not gradually improve — it appeared.
+
+<Accordion question="Why do capabilities emerge discontinuously rather than gradually?" id="accordion-emergence">
+  The leading explanation involves thresholds in underlying components. A task like multi-step arithmetic requires several sub-skills: reading numbers, performing individual operations, tracking intermediate results, and composing results. Each sub-skill may individually scale gradually. But the composed task only works when all sub-skills exceed a certain threshold simultaneously — and that coincidence happens discontinuously as model size increases. The implication is that scaling can produce surprises. Capabilities that weren't planned for and weren't present in smaller models can appear without warning in larger ones.
+</Accordion>
+
+## The Compute Overhang
+
+The scaling laws also revealed an important asymmetry: models had been undertrained relative to their size. The optimal training strategy, according to the Chinchilla paper (Hoffmann et al., 2022), was to train a smaller model on more data — not a larger model on less. GPT-3, for example, had been trained with too many parameters and too few tokens. A model with fewer parameters but trained on ten times more data would outperform it.
+
+This insight reshaped how the field designed and trained large models. It also meant that many of the largest models released before 2022 were operating well below their potential efficiency.
+
+## What Scaling Cannot Do
+
+Scaling makes models more capable at pattern matching over text. It does not, by itself, make them more truthful, more logical, or more grounded in physical reality. Large language models can produce confident-sounding text that is factually incorrect. They can fail at reasoning tasks that would be trivial for a human. They can exhibit biases present in their training data at massive scale.
+
+The question of whether these limitations are solved by more scale — or require fundamentally different approaches — is one of the most actively contested questions in the field.
+
+</div>
+<PageNav prev={{ slug: "08-teaching-machines-to-focus", number: 8, title: "Teaching Machines to Focus", part: 3, published: true }} next={{ slug: "10-teaching-machines-to-create", number: 10, title: "Teaching Machines to Create", part: 3, published: true }} />
+</ChapterLayout>

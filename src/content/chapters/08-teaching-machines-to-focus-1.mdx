@@ -1,0 +1,61 @@
+---
+title: "Teaching Machines to Focus"
+part: 3
+partLabel: "Part III — The Branches"
+subtitle: "Eight words that changed everything: Attention is all you need."
+published: true
+---
+
+import ChapterLayout from '../../layouts/ChapterLayout.astro';
+import CalloutQuote from '../../components/CalloutQuote.astro';
+import StudyNote from '../../components/StudyNote.astro';
+import Accordion from '../../components/Accordion.astro';
+import PageNav from '../../components/PageNav.astro';
+
+<ChapterLayout title="Teaching Machines to Focus" chapterSlug="08-teaching-machines-to-focus">
+<div class="chapter-breadcrumb"><a href="/">AI: Where Am I?</a><span class="sep">&rsaquo;</span><a href="#">Part III — The Branches</a><span class="sep">&rsaquo;</span><span>Chapter 8</span></div>
+<div class="part-badge">Part III — The Branches</div>
+<h1 class="chapter-title">Teaching Machines to Focus</h1>
+<p class="chapter-subtitle">Eight words that changed everything: Attention is all you need.</p>
+<div class="chapter-title-rule"></div>
+<div class="prose">
+
+<p class="drop-cap">In June 2017, eight researchers at Google Brain published a paper with a title that was both a claim and a challenge: "Attention Is All You Need." The paper introduced a neural network architecture called the Transformer. Within three years, Transformers would be the dominant architecture in natural language processing, computer vision, protein structure prediction, weather forecasting, and materials science. The paper is now among the most cited in the history of AI research.</p>
+
+The architecture it replaced had a structural problem: recurrent networks processed sequences one step at a time. Each step depended on the previous. This sequential dependency made them slow to train on large datasets. The Transformer abolished this constraint entirely.
+
+## The Attention Mechanism
+
+<StudyNote text="Attention was first described as an addition to encoder-decoder architectures by Bahdanau et al. in 2014. The Transformer paper's contribution was showing that attention alone — without any recurrence — was sufficient for state-of-the-art performance." />
+
+The key innovation is attention: a mechanism that allows every element in a sequence to look at every other element and decide how much to focus on each one.
+
+Consider translating "The animal didn't cross the street because it was too tired." What does "it" refer to? A human reader immediately knows it refers to "the animal." This requires connecting a pronoun to a noun that appeared several words earlier. Attention allows the network to make this connection directly — when processing "it," the model learns to focus heavily on "animal" and less on "street" or "tired."
+
+<CalloutQuote text="Attention is not a metaphor. It is a mathematical operation: for each position in the sequence, compute a weighted sum of all other positions, where the weights are learned and reflect relevance." />
+
+<Accordion question="How does self-attention actually compute these weights?" id="accordion-attention">
+  Each element in the sequence is transformed into three vectors: a Query (what am I looking for?), a Key (what do I contain?), and a Value (what information do I provide?). To compute attention for position i, you take its Query vector and compute a dot product with the Key vectors of all other positions. High dot products mean high relevance. These scores are normalized with a softmax function to produce weights that sum to 1. The output for position i is then a weighted sum of all Value vectors, weighted by these relevance scores. Crucially, all positions are processed in parallel — no sequential dependency.
+</Accordion>
+
+## The Transformer Architecture
+
+The full Transformer stacks multiple attention layers. Each layer processes the entire sequence in parallel, allowing the model to capture relationships between words regardless of how far apart they appear. Positional encodings — sine and cosine functions of different frequencies — are added to the input to give the model information about the order of elements, since attention itself is position-agnostic.
+
+The architecture also includes feed-forward networks within each layer, residual connections (borrowed from ResNet), and layer normalization. Together, these components produce a model that can be trained efficiently on GPUs across massive datasets.
+
+## Move 37: The Transformer Spreads
+
+What made the Transformer's impact unusual was the breadth of its application. It was designed for language. Within five years it had been applied to nearly every domain in this book.
+
+AlphaFold 2 (2021) used a modified Transformer architecture to predict protein structures. GraphCast (2023) used a graph-based variant to forecast weather. GNoME used related architectures to discover crystal structures. The core insight that attention — a mechanism for computing relevance across any structured sequence — was general-purpose enough to work on molecular sequences, weather states, and amino acid chains proved far more consequential than its inventors anticipated.
+
+## What Transformers Cannot Do
+
+The architecture has real limitations. Transformers are computationally expensive: attention over a sequence of length n requires n² operations. This makes very long sequences expensive to process. They also require enormous amounts of training data — the largest language models are trained on trillions of words. And they do not inherently understand causation, physical laws, or the constraints of the real world. They are, at their core, sophisticated pattern matchers over sequences.
+
+Whether these limitations are engineering challenges to be solved or fundamental constraints on what the architecture can achieve is one of the central debates in AI research today.
+
+</div>
+<PageNav prev={{ slug: "07-teaching-machines-to-decide", number: 7, title: "Teaching Machines to Decide", part: 3, published: true }} next={{ slug: "09-teaching-machines-to-scale", number: 9, title: "Teaching Machines to Scale", part: 3, published: true }} />
+</ChapterLayout>

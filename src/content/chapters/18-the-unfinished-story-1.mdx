@@ -1,0 +1,79 @@
+---
+title: "The Unfinished Story"
+part: 5
+partLabel: "Part V — The Horizon"
+subtitle: "What AI cannot do yet — and why the open questions matter more than the settled ones."
+published: true
+---
+
+import ChapterLayout from '../../layouts/ChapterLayout.astro';
+import CalloutQuote from '../../components/CalloutQuote.astro';
+import StudyNote from '../../components/StudyNote.astro';
+import Accordion from '../../components/Accordion.astro';
+import PageNav from '../../components/PageNav.astro';
+
+<ChapterLayout title="The Unfinished Story" chapterSlug="18-the-unfinished-story">
+<div class="chapter-breadcrumb"><a href="/">AI: Where Am I?</a><span class="sep">&rsaquo;</span><a href="#">Part V — The Horizon</a><span class="sep">&rsaquo;</span><span>Chapter 18</span></div>
+<div class="part-badge">Part V — The Horizon</div>
+<h1 class="chapter-title">The Unfinished Story</h1>
+<p class="chapter-subtitle">What AI cannot do yet — and why the open questions matter more than the settled ones.</p>
+<div class="chapter-title-rule"></div>
+<div class="prose">
+
+<p class="drop-cap">This book began with a question about perception: why do most people, when they think about AI, picture chatbots and image generators rather than the work that is actually reshaping science? That question has a structural answer. The applications with the largest user bases are the most visible. The applications with the largest scientific consequences are mostly invisible — published in journals, deployed in specialized tools, cited by researchers who already know they exist. The gap between public understanding and scientific reality is a gap in information, not in intelligence.</p>
+
+## What We Know
+
+The previous seventeen chapters established several things with confidence.
+
+Deep learning works. Not as a general theory of intelligence, but as an empirical method for approximating complex functions from data. The mechanisms — backpropagation, attention, residual connections, graph neural networks — produce results across an enormous range of domains when applied to the right representations.
+
+The results are uneven. Image classification, protein structure prediction, and weather forecasting have seen transformative advances. Natural language generation has scaled to remarkable fluency. Decision-making under uncertainty, long-horizon planning, and causal reasoning remain genuinely hard.
+
+The failures are systematic. Models trained on historical data inherit historical biases. Models trained on one population fail on others. Models evaluated on benchmark datasets may not generalize to deployment environments. None of these are surprising limitations once you understand what training on data means.
+
+## What We Don't Know
+
+<CalloutQuote text="The most important open questions in AI are not engineering questions. They are scientific ones." />
+
+<StudyNote text="The scaling hypothesis — that current architectures will continue to improve with more data and compute — remains unproven at the frontier. Every previous scaling law has eventually hit limits." />
+
+**Does understanding require causation?** Current models correlate patterns. Pearl's ladder (Chapter 3) distinguishes this from understanding causes and reasoning about counterfactuals. Whether this distinction matters for practical applications, or whether sufficiently good correlation is functionally equivalent to understanding, is genuinely unresolved.
+
+**What are scaling laws' limits?** The power laws described in Chapter 9 have held across orders of magnitude of compute and data. Whether they continue to hold, or whether there are capability ceilings that more compute cannot cross, is not known.
+
+**How do we align large models with intended behavior?** Language models trained to predict text can generate coherent arguments for positions their developers explicitly oppose. Whether techniques like reinforcement learning from human feedback produce models that are reliably aligned — or merely models that are better at appearing aligned — is an active research question with no settled answer.
+
+<Accordion question="What is the alignment problem in AI?" id="accordion-alignment">
+  The alignment problem is the challenge of ensuring that AI systems pursue the goals their designers actually intended, rather than a proxy for those goals that happens to be easier to optimise. A language model trained to maximize human approval ratings might learn to be confidently wrong rather than accurately uncertain — because humans find confidence more satisfying than epistemic humility. A model trained to minimize user complaints might learn to validate user beliefs rather than correct them. These failures arise not from malice but from the difficulty of specifying what we actually want in a form that can be optimised. The problem becomes more serious as models become more capable.
+</Accordion>
+
+## The Questions That Are Actually Open
+
+The honest list of open questions is shorter than the popular discourse suggests. Many problems described as "unsolved" have partial solutions that work in well-defined settings. Many problems described as "solved" have failure modes that emerge in deployment.
+
+The genuinely open questions, where reasonable researchers disagree not about implementation details but about fundamental feasibility, include: whether current architectures can achieve robust causal reasoning; whether neural networks can reliably generalize to novel situations outside their training distribution; whether human-level performance on open-ended tasks is achievable by the current paradigm or requires fundamentally different approaches; and whether the alignment of powerful AI systems is a technical problem that can be solved or a governance problem that requires institutional solutions.
+
+## The Researcher's Position
+
+<CalloutQuote text="Every field represented in this book is being changed by AI — not uniformly, not automatically, and not without cost. Understanding the change requires understanding both what the technology does and what it doesn't." />
+
+If you are a researcher in biology, physics, law, climate science, or the humanities, the question is not whether AI will affect your work. It already has, whether or not you have noticed. The question is how to engage with it productively: which techniques apply to your specific problems, how to evaluate whether a claimed result is credible, where the method's limitations will bind, and which open questions in your field might benefit from the kind of large-scale pattern analysis that AI enables.
+
+None of those questions have general answers. They require domain knowledge that only you have. This book was never intended to replace that knowledge. It was intended to give you the conceptual vocabulary to bring your domain knowledge into conversation with the technical literature — to read a paper about AI in your field and know which questions to ask.
+
+## The Tree Is Still Growing
+
+The metaphor used in Chapter 1 was a tree. The roots are the mathematical foundations — statistics, probability, backpropagation. The branches are the techniques — CNNs, LSTMs, Transformers, reinforcement learning, generative models. The canopy is where those techniques meet real problems: in hospitals, laboratories, courtrooms, and concert halls.
+
+The tree is not finished. New branches are growing — foundation models, neuromorphic computing, quantum-assisted machine learning. Old branches are being pruned — methods that seemed promising but didn't scale, applications that turned out to be simpler than they appeared.
+
+<StudyNote text="The most consequential AI results of the next decade will probably come from fields we haven't discussed in this book — because the most consequential problems often lie outside the current map." />
+
+What you have at the end of this book is a map of the territory as it exists in 2025. The territory will change. The map will need updating. What will not change is the method for reading the territory: understanding the foundations, tracing the connections, asking the right questions, and distinguishing what is known from what is claimed.
+
+That is where the story is, always: not in the settled results, but in the open questions. Not in the claims, but in the evidence. Not in what AI can do, but in what we choose to do with it.
+
+</div>
+<PageNav prev={{ slug: "17-the-researchers-toolkit", number: 17, title: "The Researcher's Toolkit", part: 5, published: true }} next={null} />
+</ChapterLayout>

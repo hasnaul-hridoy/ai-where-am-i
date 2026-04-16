@@ -1,0 +1,61 @@
+---
+title: "The Algorithm in the Courtroom"
+part: 4
+partLabel: "Part IV — The Canopy"
+subtitle: "AI in law: the COMPAS controversy, what algorithmic fairness actually means, and why it matters."
+published: true
+---
+
+import ChapterLayout from '../../layouts/ChapterLayout.astro';
+import CalloutQuote from '../../components/CalloutQuote.astro';
+import StudyNote from '../../components/StudyNote.astro';
+import Accordion from '../../components/Accordion.astro';
+import PageNav from '../../components/PageNav.astro';
+
+<ChapterLayout title="The Algorithm in the Courtroom" chapterSlug="14-the-algorithm-in-the-courtroom">
+<div class="chapter-breadcrumb"><a href="/">AI: Where Am I?</a><span class="sep">&rsaquo;</span><a href="#">Part IV — The Canopy</a><span class="sep">&rsaquo;</span><span>Chapter 14</span></div>
+<div class="part-badge">Part IV — The Canopy</div>
+<h1 class="chapter-title">The Algorithm in the Courtroom</h1>
+<p class="chapter-subtitle">AI in law: the COMPAS controversy, what algorithmic fairness actually means, and why it matters.</p>
+<div class="chapter-title-rule"></div>
+<div class="prose">
+
+<p class="drop-cap">In 2016, ProPublica published an investigation into COMPAS, an algorithm used in criminal justice to predict the likelihood that a defendant would reoffend. The investigation compared the algorithm's predictions to actual outcomes over two years and found a systematic disparity: Black defendants were nearly twice as likely to be falsely flagged as high-risk than white defendants, while white defendants were more likely to be incorrectly labelled low-risk and then go on to reoffend.</p>
+
+The company that built COMPAS responded with a counter-analysis: their algorithm was well-calibrated. Among defendants scored as high-risk, Black and white defendants reoffended at the same rate. Both analyses were correct. They were measuring different things.
+
+## The Fairness Impossibility
+
+<CalloutQuote text="You cannot simultaneously achieve equal false positive rates across groups, equal false negative rates across groups, and equal calibration — if the base rates of reoffending differ between groups." />
+
+This is not an ideological claim. It is a mathematical proof (Chouldechova, 2017). Three intuitive notions of fairness — the algorithm should be equally likely to wrongly flag innocent people regardless of race; it should be equally likely to miss actual reoffenders regardless of race; and it should mean the same thing across groups when it says someone is high-risk — are mutually incompatible when base rates differ.
+
+The COMPAS case forced a technical question that the field had largely avoided: what does it mean for an algorithm to be fair? The answer, it turned out, depended on which definition of fairness you chose — and different definitions implied different distributions of consequences for different people.
+
+<Accordion question="What are the different definitions of algorithmic fairness and why can't you have all of them?" id="accordion-fairness">
+  Three common fairness definitions: (1) **Calibration**: among people with a given risk score, the proportion who actually reoffend should be the same across groups. (2) **Equal false positive rate**: among people who won't reoffend, the proportion incorrectly flagged as high-risk should be the same across groups. (3) **Equal false negative rate**: among people who will reoffend, the proportion incorrectly labelled low-risk should be the same across groups. When base rates differ between groups — when one group has a higher historical rate of reoffending — satisfying calibration necessarily violates equal false positive rates, and vice versa. You must choose which definition of fairness matters most. That is a value judgment, not a technical one.
+</Accordion>
+
+## What Algorithms Do to Power
+
+<StudyNote text="Narayanan and Kapoor (2024) note that the most important question about any predictive algorithm deployed in high-stakes decisions is not 'is it accurate?' but 'what decisions does it change, and are those changes just?'" />
+
+Legal AI is deployed at multiple points in the criminal justice system. Risk assessment tools like COMPAS inform bail and sentencing decisions. Natural language processing systems extract information from legal documents. Prediction models estimate the likelihood that cases will succeed on appeal. Contract analysis tools flag clauses and assign risk scores.
+
+The legal system uses historical decisions as training data. But historical decisions encode historical biases — decades of differential policing, prosecution, and sentencing. A model trained on these decisions learns those patterns. Whether it amplifies or moderates them depends on exactly how it is deployed and what it is optimised for.
+
+The COMPAS case also revealed a practical problem: the algorithm's proprietary nature made independent auditing nearly impossible. Defense attorneys argued that defendants had a constitutional right to understand the basis of their sentence. Courts generally disagreed. The technical opacity of the system and the legal opacity of its deployment reinforced each other.
+
+## AI That Actually Helps
+
+<CalloutQuote text="The same analytical tools can be used to audit the system rather than automate it — finding patterns of bias in historical sentencing rather than predicting future behavior." />
+
+Several research groups have used machine learning to audit existing legal systems rather than predict outcomes. Analysis of millions of bail decisions found consistent racial disparities that persisted even when controlling for relevant legal factors. Analysis of stop-and-frisk records found patterns inconsistent with probable cause standards. These applications use AI as a magnifying glass on institutional behavior rather than as a decision-making tool.
+
+Legal document analysis — reviewing contracts for non-standard clauses, extracting relevant precedents from case law, flagging potential regulatory violations — is a more defensible application. These tools assist rather than replace legal judgment, and the output is reviewed by a human who can contextualize and override it.
+
+The fundamental lesson of AI in law is the same as AI in medicine: the technology inherits the biases of the data it is trained on. Deploying it without auditing those biases does not produce a fairer system. It automates the existing one.
+
+</div>
+<PageNav prev={{ slug: "13-the-planets-ledger", number: 13, title: "The Planet's Ledger", part: 4, published: true }} next={{ slug: "15-the-machine-and-the-muse", number: 15, title: "The Machine and the Muse", part: 4, published: true }} />
+</ChapterLayout>

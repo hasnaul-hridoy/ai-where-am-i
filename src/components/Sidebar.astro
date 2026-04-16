@@ -1,0 +1,105 @@
+---
+/**
+ * Sidebar.astro
+ * Floaty rounded navigation panel with collapsible parts.
+ * Receives the current chapter slug to highlight the active item.
+ */
+import { chapters, parts, getChaptersByPart } from '../data/chapters';
+
+interface Props {
+  currentSlug: string;
+}
+
+const { currentSlug } = Astro.props;
+
+// Determine which part the current chapter belongs to
+const currentChapter = chapters.find(c => c.slug === currentSlug);
+const activePart = currentChapter?.part ?? 1;
+---
+
+<div class="sidebar-wrapper" id="sidebar-wrapper">
+  <nav class="sidebar-panel" id="sidebar-panel" aria-label="Chapter navigation">
+
+    <!-- Logo area -->
+    <div class="sidebar-logo-area">
+      <a href="/" class="sidebar-logo" aria-label="AI: Where Am I? Home">AI</a>
+      <button
+        class="sidebar-close-btn"
+        id="sidebar-close-btn"
+        aria-label="Close navigation"
+        onclick="closeSidebar()"
+      >
+        Close
+      </button>
+    </div>
+
+    <!-- Nav items -->
+    <div class="sidebar-nav">
+      {parts.map(part => {
+        const partChapters = getChaptersByPart(part.number);
+        const isActivePart = part.number === activePart;
+
+        return (
+          <div class="nav-group">
+            <div
+              class="nav-part"
+              data-part={part.number}
+              aria-expanded={isActivePart ? 'true' : 'false'}
+            >
+              {part.label}
+            </div>
+
+            <div
+              class:list={['nav-items', { 'is-open': isActivePart }]}
+              data-part-items={part.number}
+            >
+              {partChapters.map(chapter => (
+                <a
+                  href={chapter.published ? `/chapters/${chapter.slug}` : '#'}
+                  class:list={[
+                    'nav-item',
+                    { 'is-active': chapter.slug === currentSlug },
+                    { 'is-disabled': !chapter.published },
+                  ]}
+                  aria-current={chapter.slug === currentSlug ? 'page' : undefined}
+                  tabindex={chapter.published ? 0 : -1}
+                >
+                  {chapter.title}
+                </a>
+              ))}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+
+    <div class="sidebar-footer">
+      2026 &copy; AI: Where Am I?
+    </div>
+
+  </nav>
+</div>
+
+<script>
+  // Click part title to expand/collapse its chapters
+  // Only one part open at a time
+  document.querySelectorAll('.nav-part').forEach(part => {
+    part.addEventListener('click', () => {
+      const targetId = (part as HTMLElement).dataset.part;
+      const items = document.querySelector(`[data-part-items="${targetId}"]`);
+      if (!items) return;
+
+      const isOpen = items.classList.contains('is-open');
+
+      // Close all parts first
+      document.querySelectorAll('.nav-items').forEach(ni => ni.classList.remove('is-open'));
+      document.querySelectorAll('.nav-part').forEach(np => np.setAttribute('aria-expanded', 'false'));
+
+      // Toggle the clicked part
+      if (!isOpen) {
+        items.classList.add('is-open');
+        part.setAttribute('aria-expanded', 'true');
+      }
+    });
+  });
+</script>

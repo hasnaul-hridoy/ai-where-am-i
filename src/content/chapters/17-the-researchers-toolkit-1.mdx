@@ -1,0 +1,83 @@
+---
+title: "The Researcher's Toolkit"
+part: 5
+partLabel: "Part V — The Horizon"
+subtitle: "Five questions every non-technical researcher should ask about any AI result."
+published: true
+---
+
+import ChapterLayout from '../../layouts/ChapterLayout.astro';
+import CalloutQuote from '../../components/CalloutQuote.astro';
+import StudyNote from '../../components/StudyNote.astro';
+import Accordion from '../../components/Accordion.astro';
+import PageNav from '../../components/PageNav.astro';
+
+<ChapterLayout title="The Researcher's Toolkit" chapterSlug="17-the-researchers-toolkit">
+<div class="chapter-breadcrumb"><a href="/">AI: Where Am I?</a><span class="sep">&rsaquo;</span><a href="#">Part V — The Horizon</a><span class="sep">&rsaquo;</span><span>Chapter 17</span></div>
+<div class="part-badge">Part V — The Horizon</div>
+<h1 class="chapter-title">The Researcher's Toolkit</h1>
+<p class="chapter-subtitle">Five questions every non-technical researcher should ask about any AI result.</p>
+<div class="chapter-title-rule"></div>
+<div class="prose">
+
+<p class="drop-cap">You have read a paper claiming that a deep learning model predicts disease outcome with 94% accuracy — outperforming the current clinical standard. Should you be impressed? Should you change your clinical practice? Should you collaborate with the authors? The answer to all three questions depends on details that the headline number does not reveal. This chapter gives you the tools to find those details and evaluate what they mean.</p>
+
+## Five Questions Before You Start
+
+These are not exhaustive. They are the five questions that catch the most common problems in applied AI papers — the ones that separate credible results from overfit benchmarks and misleading metrics.
+
+## Question 1: What Is the Baseline?
+
+<CalloutQuote text="94% accuracy sounds impressive. Against a baseline that achieves 93% by always predicting the majority class, it is not." />
+
+Every claim of AI performance needs a baseline. The simplest baseline is the majority class classifier: always predict the most common outcome. In a dataset where 90% of cases are negative, always predicting negative gives 90% accuracy with zero intelligence. A model that achieves 94% accuracy in this setting has learned something, but not much.
+
+<StudyNote text="In medical AI, many datasets are severely imbalanced — the condition being detected is rare. Accuracy is almost always the wrong metric. Use AUROC, sensitivity/specificity, or F1-score instead." />
+
+More meaningful baselines include: the current clinical standard of care, a simple logistic regression with the same features, and a model trained on demographically matched data from a different time period.
+
+<Accordion question="What metrics should I use instead of accuracy?" id="accordion-metrics">
+  For binary classification with imbalanced classes: **AUROC** (area under the receiver operating characteristic curve) measures how well the model separates the two classes across all possible thresholds. A value of 1.0 is perfect; 0.5 is chance. **Sensitivity** (recall) measures: of all actual positive cases, what fraction did the model detect? **Specificity** measures: of all actual negative cases, what fraction did the model correctly label negative? **Positive predictive value** (precision) measures: of all cases the model labelled positive, what fraction were actually positive? Different applications weight these differently — for disease screening you might prioritise sensitivity; for resource allocation you might prioritise positive predictive value.
+</Accordion>
+
+## Question 2: How Was the Data Split?
+
+A model evaluated on data it was trained on produces artificially high performance. The correct procedure is to split the data before training begins: use part for training, part for validation (to tune hyperparameters), and part for testing (evaluated once, at the end).
+
+<CalloutQuote text="If the test set was used to make any decisions during model development — including decisions about architecture, features, or training duration — the test performance is optimistic." />
+
+The more subtle version of this problem is temporal leakage: splitting randomly in a dataset where time matters. A model trained on patient data from 2018-2022 and tested on a random subset of that same period will appear to work well. A model deployed on patients from 2023 may fail if medical practice or patient demographics have shifted.
+
+## Question 3: Does It Generalize?
+
+Performance on the training institution's data does not guarantee performance elsewhere. This is the external validation problem, and it is endemic in medical AI.
+
+A study by Zech et al. (2018) found that a pneumonia detection model trained at one hospital performed well on data from that hospital but significantly worse on data from two other hospitals, despite similar patient populations. The model had learned hospital-specific patterns — differences in scanner calibration, imaging protocols, and patient demographics — rather than disease-relevant patterns.
+
+The gold standard for generalization is prospective validation: deploy the model in a new setting and measure performance on new patients as they arrive. Few AI medical studies do this. Most report retrospective performance on historical data.
+
+## Question 4: What Does the Model Actually Learn?
+
+<StudyNote text="The asthma-pneumonia case from Chapter 11 is the canonical example: the model learned the effect of a safety protocol, not the underlying disease risk. Correct prediction, wrong mechanism." />
+
+Interpretability tools — saliency maps, SHAP values, attention visualisations — can reveal what features the model uses to make predictions. These tools are imperfect, but they can catch obvious problems: a skin lesion classifier that uses ruler markings (present in images of lesions being measured) as evidence of malignancy, or a chest X-ray model that uses hospital logos to predict diagnosis.
+
+<Accordion question="What is a saliency map and how do I read one?" id="accordion-saliency">
+  A saliency map highlights which parts of the input most influenced the model's output. For an image classifier, it shows which pixels were most important for the prediction — often visualised as a heatmap overlaid on the image. If a skin lesion classifier's saliency map shows high activation on the ruler markings or the patch of skin surrounding the lesion rather than on the lesion itself, the model has learned a spurious feature. These maps are generated by computing the gradient of the output with respect to the input — which pixels, if changed slightly, would most change the prediction. They are useful for sanity-checking but are not a complete explanation of what the model has learned.
+</Accordion>
+
+## Question 5: What Is the Deployment Context?
+
+A model evaluated on high-quality research data may perform very differently on the messier data encountered in practice. Missing values, different imaging equipment, inconsistent coding practices, and data entry errors are common in real clinical systems and rare in curated research datasets.
+
+The deployment context also determines which errors matter most. A screening tool where false negatives mean missed diagnoses should be evaluated on sensitivity. A triage tool where false positives mean unnecessary procedures should be evaluated on specificity. These are not technical choices — they are value choices that should involve the people affected by the decisions.
+
+## Reading an AI Paper
+
+With these five questions in mind, reading an AI paper becomes more tractable. Look for the dataset description (how was it collected? when? where?), the train-test split procedure (was temporal or geographic separation used?), the evaluation metrics (accuracy alone is insufficient for imbalanced data), the baseline comparisons (what was the prior state of the art?), and the external validation (was the model tested outside its training distribution?).
+
+If these elements are present and the results hold, the claim is worth taking seriously. If they are absent, the claim requires more scrutiny before it changes anything you do.
+
+</div>
+<PageNav prev={{ slug: "16-the-hidden-network", number: 16, title: "The Hidden Network", part: 5, published: true }} next={{ slug: "18-the-unfinished-story", number: 18, title: "The Unfinished Story", part: 5, published: true }} />
+</ChapterLayout>

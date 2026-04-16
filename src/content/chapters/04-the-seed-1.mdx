@@ -1,0 +1,69 @@
+---
+title: "The Seed"
+part: 2
+partLabel: "Part II — The Roots"
+subtitle: "The perceptron, backpropagation, and the architecture that waited twenty-five years to become useful."
+published: true
+---
+
+import ChapterLayout from '../../layouts/ChapterLayout.astro';
+import CalloutQuote from '../../components/CalloutQuote.astro';
+import StudyNote from '../../components/StudyNote.astro';
+import Accordion from '../../components/Accordion.astro';
+import PageNav from '../../components/PageNav.astro';
+
+<ChapterLayout title="The Seed" chapterSlug="04-the-seed">
+<div class="chapter-breadcrumb"><a href="/">AI: Where Am I?</a><span class="sep">&rsaquo;</span><a href="#">Part II — The Roots</a><span class="sep">&rsaquo;</span><span>Chapter 4</span></div>
+<div class="part-badge">Part II — The Roots</div>
+<h1 class="chapter-title">The Seed</h1>
+<p class="chapter-subtitle">The perceptron, backpropagation, and the architecture that waited twenty-five years to become useful.</p>
+<div class="chapter-title-rule"></div>
+<div class="prose">
+
+<p class="drop-cap">On 8 July 1958, the *New York Times* ran a story about a machine built at the Cornell Aeronautical Laboratory. The headline described a "New Navy Device" that "Learns by Doing." The machine was Frank Rosenblatt's Mark I Perceptron, and the claims attached to it were extraordinary. Rosenblatt suggested it would eventually be able to walk, talk, see, write, reproduce itself, and be conscious of its own existence.</p>
+
+The perceptron did none of those things. What it did was simpler and, in retrospect, more important. It took a set of inputs, multiplied each by a weight, summed the results, and passed them through a threshold function. If the sum exceeded the threshold, the output was one; otherwise, zero. The weights were not set by a programmer — they were adjusted automatically during training. This was a genuinely new idea: a machine that changed its own behavior based on examples.
+
+## The Critique That Froze a Field
+
+What the perceptron could not do was compute XOR. In 1969, Minsky and Papert published *Perceptrons*, proving this mathematically. Their analysis was correct. The field drew the wrong conclusion — treating it as a verdict on neural networks in general rather than a specific limitation of single-layer architectures. For nearly two decades, working on neural networks was a way to end a career.
+
+## Adjusting a Million Tiny Knobs
+
+<StudyNote text="The activation function is what gives neural network depth its power. Without it, stacking layers achieves nothing — a series of linear operations collapses into a single linear operation regardless of depth." />
+
+To understand why multi-layer networks escape the perceptron's limitations, imagine a wall covered with a million small dials, each set to a random position. Each dial represents a weight. An input — say an image of a handwritten digit — passes through several layers of dials, multiplied, summed, and passed through a simple nonlinear function at each layer.
+
+The output is compared to the correct answer. The question is: which of the million dials should you turn, and in which direction, to make the error smaller?
+
+This is the problem that backpropagation solves. Working backward from the output, the algorithm computes how much each dial contributed to the error, then adjusts every weight simultaneously. One pass through one example changes each dial by a fraction. After millions of examples, the cumulative effect is a network tuned to recognize patterns no human programmer specified.
+
+## The Move 37 Moment: Learning Representations
+
+<CalloutQuote text="Learning representations by back-propagating errors." />
+
+In 1986, Rumelhart, Hinton, and Williams published a three-page paper in *Nature* with that title. It demonstrated that backpropagation applied to multi-layer networks could learn internal representations not specified by the programmer — representations that emerged from the training process itself.
+
+The paper was a direct answer to Minsky and Papert. Multi-layer networks could compute XOR. They could also learn tasks far more complex than anything a single-layer perceptron could handle. It should have restarted the field.
+
+<Accordion question="Why didn't the 1986 backpropagation result immediately transform AI?" id="accordion-backprop">
+  Three practical obstacles remained. First, the networks of the late 1980s were small — typically two or three layers with hundreds of neurons. Second, computers were slow — training took weeks on tasks that now take hours. Third, the vanishing gradient problem made deep networks nearly impossible to train: the error signal shrank exponentially as it propagated backward through each layer, leaving the earliest layers unable to learn. The technique worked in principle but the engineering wasn't ready.
+</Accordion>
+
+## Any Function, Given Enough Neurons
+
+In 1989, George Cybenko proved the universal approximation theorem: a neural network with a single hidden layer and enough neurons can approximate any continuous function to any desired accuracy. The theorem does not say how many neurons you need. It does not say the network will be easy to train. It says that in principle, the architecture is not the bottleneck.
+
+For the researchers who continued working through the 1990s, this was a reason to keep going. The architecture was not fundamentally broken. The engineering just wasn't ready.
+
+## What Was Missing
+
+Three things needed to change. The first was data — in the 1980s, a typical training set had thousands of examples; by the 2010s, ImageNet had millions. The second was hardware — GPUs designed for video games turned out to be efficient at the parallel matrix operations neural networks require. The third was technical innovations: ReLU activations that avoided the vanishing gradient, dropout that reduced overfitting, batch normalization that stabilized training.
+
+None of these individually was a dramatic breakthrough. Together, they removed the practical barriers that had made deep networks impractical for twenty-five years.
+
+The perceptron could see, in a crude sense. But it saw everything at once, treating every pixel as independent. Teaching a machine to see the way humans see — to recognize that nearby pixels form edges, edges form shapes, shapes form objects — required a specific kind of network. One inspired not by abstract mathematics but by the actual architecture of the mammalian visual cortex. That architecture is next.
+
+</div>
+<PageNav prev={{ slug: "03-the-soil", number: 3, title: "The Soil", part: 2, published: true }} next={{ slug: "05-teaching-machines-to-see", number: 5, title: "Teaching Machines to See", part: 3, published: true }} />
+</ChapterLayout>

@@ -1,0 +1,79 @@
+---
+title: "Teaching Machines to Decide"
+part: 3
+partLabel: "Part III — The Branches"
+subtitle: "Reinforcement learning, Move 37, and the science of learning from consequences."
+published: true
+---
+
+import ChapterLayout from '../../layouts/ChapterLayout.astro';
+import StatCards from '../../components/StatCards.astro';
+import CalloutQuote from '../../components/CalloutQuote.astro';
+import StudyNote from '../../components/StudyNote.astro';
+import Accordion from '../../components/Accordion.astro';
+import PageNav from '../../components/PageNav.astro';
+
+<ChapterLayout title="Teaching Machines to Decide" chapterSlug="07-teaching-machines-to-decide">
+<div class="chapter-breadcrumb"><a href="/">AI: Where Am I?</a><span class="sep">&rsaquo;</span><a href="#">Part III — The Branches</a><span class="sep">&rsaquo;</span><span>Chapter 7</span></div>
+<div class="part-badge">Part III — The Branches</div>
+<h1 class="chapter-title">Teaching Machines to Decide</h1>
+<p class="chapter-subtitle">Reinforcement learning, Move 37, and the science of learning from consequences.</p>
+<div class="chapter-title-rule"></div>
+<div class="prose">
+
+<p class="drop-cap">On 9 March 2016, in the Four Seasons Hotel in Seoul, a machine played a move that the commentators could not explain. It was move 37 of Game 2 between AlphaGo and Lee Sedol, one of the strongest Go players in history. AlphaGo placed a stone in a position where no professional player would have played. Fan Hui, the European champion, estimated the probability that a human expert would have played that move at roughly one in ten thousand.</p>
+
+It was not a mistake. Over the next fifty moves, the logic of move 37 became apparent. It had created influence across the board in a way that constrained Lee Sedol's options for the rest of the game. AlphaGo won the match four games to one.
+
+AlphaGo did not play Go the way expert systems played chess. It had learned to play by a fundamentally different method — not by being programmed with rules, not by learning from labelled examples, but by playing millions of games against itself and adjusting its strategy based on which actions led to wins and which led to losses. This method is reinforcement learning.
+
+## Learning from Consequences
+
+<StudyNote text="The reward signal in reinforcement learning is often extremely sparse. AlphaGo received feedback only at the end of a game — win or lose. It had to learn which of the hundreds of moves it made contributed to that outcome." />
+
+Reinforcement learning formalizes a simple idea: an agent takes actions in an environment, receives rewards or penalties for those actions, and learns a policy — a mapping from situations to actions — that maximises cumulative reward over time.
+
+The framework has three components. The **agent** makes decisions. The **environment** responds to those decisions and provides feedback. The **reward signal** tells the agent how well it did — not immediately after every action, but eventually, at meaningful milestones.
+
+<CalloutQuote text="The challenge is not just maximising immediate reward. It is the credit assignment problem: which of the hundreds of actions taken over a long episode actually caused the eventual outcome?" />
+
+## What Would You Do?
+
+Imagine you are learning chess. Nobody tells you the rules. Nobody shows you example games. You simply play thousands of games, and at the end of each game you are told whether you won or lost. You cannot ask why. You cannot consult a textbook. You adjust your strategy based entirely on outcomes.
+
+This is reinforcement learning. It is inefficient by human standards — it requires many more examples than supervised learning. But it is also unconstrained. The agent is not limited to strategies that humans have thought of. It can discover tactics that no human would have considered, because it is exploring the space of possible actions without preconceptions.
+
+## Deep Q-Networks: Atari
+
+In 2015, DeepMind published a paper in *Nature* demonstrating a system that could learn to play 49 Atari video games directly from the screen pixels, using a single algorithm with no game-specific programming.
+
+<StatCards
+  id="stats-atari"
+  stats={[
+    { number: 49, display: '', divide: 1, label: 'Atari games learned' },
+    { text: '29', label: 'Games where DQN bested human experts' },
+    { text: 'pixels', label: 'Only input: raw screen pixels' },
+  ]}
+/>
+
+The system — a Deep Q-Network, or DQN — combined reinforcement learning with a convolutional neural network. The network took raw screen pixels as input and output a value for each possible action. The agent learned which actions led to high scores through millions of trials. On Breakout, it discovered a strategy that human players had not found: tunnel into the side of the bricks and hit the ball behind the wall, scoring rapidly without effort.
+
+<Accordion question="What is Q-learning and what does the Q stand for?" id="accordion-qlearning">
+  Q-learning estimates the "quality" of taking a specific action in a specific state — hence Q. Formally, the Q-value represents the expected cumulative future reward from taking action A in state S and then following the optimal policy thereafter. The agent updates these estimates as it gains experience: if an action led to a higher reward than expected, its Q-value increases. If it led to a lower reward, it decreases. Deep Q-Networks replaced a table of Q-values (which would be impossibly large for complex environments) with a neural network that approximates them from raw input.
+</Accordion>
+
+## Move 37: AlphaGo
+
+Go has more possible board positions than atoms in the observable universe. A brute-force search approach that worked for chess was completely infeasible. AlphaGo used two neural networks: a policy network that suggested promising moves, and a value network that estimated the probability of winning from any position. These networks were trained first by supervised learning on human expert games, then refined by playing millions of games against themselves using reinforcement learning.
+
+The result was a system that had, in some sense, developed its own theory of good Go play — one that diverged from human conventions in ways that initially looked like errors but turned out to represent genuine insights.
+
+## Beyond Games
+
+The principles behind AlphaGo transferred directly to scientific domains. DeepMind's AlphaFold (Chapter 11) used elements of the same framework to fold proteins. Their plasma control work at the Swiss tokamak in 2022 trained RL controllers to maintain nuclear fusion plasmas in real time — a control problem too fast and complex for human-designed systems.
+
+Reinforcement learning is now applied to drug molecule design, robotic manipulation, chip layout optimization, and energy grid management. The common thread is that these are problems where the optimal strategy cannot be specified in advance, where the only way to learn is by trying.
+
+</div>
+<PageNav prev={{ slug: "06-teaching-machines-to-remember", number: 6, title: "Teaching Machines to Remember", part: 3, published: true }} next={{ slug: "08-teaching-machines-to-focus", number: 8, title: "Teaching Machines to Focus", part: 3, published: true }} />
+</ChapterLayout>

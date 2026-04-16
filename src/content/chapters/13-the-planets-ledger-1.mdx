@@ -1,0 +1,69 @@
+---
+title: "The Planet's Ledger"
+part: 4
+partLabel: "Part IV — The Canopy"
+subtitle: "AI in climate science: ten-day forecasts in under a minute, and the carbon cost of the tools that help."
+published: true
+---
+
+import ChapterLayout from '../../layouts/ChapterLayout.astro';
+import StatCards from '../../components/StatCards.astro';
+import CalloutQuote from '../../components/CalloutQuote.astro';
+import StudyNote from '../../components/StudyNote.astro';
+import Accordion from '../../components/Accordion.astro';
+import PageNav from '../../components/PageNav.astro';
+
+<ChapterLayout title="The Planet's Ledger" chapterSlug="13-the-planets-ledger">
+<div class="chapter-breadcrumb"><a href="/">AI: Where Am I?</a><span class="sep">&rsaquo;</span><a href="#">Part IV — The Canopy</a><span class="sep">&rsaquo;</span><span>Chapter 13</span></div>
+<div class="part-badge">Part IV — The Canopy</div>
+<h1 class="chapter-title">The Planet's Ledger</h1>
+<p class="chapter-subtitle">AI in climate science: ten-day forecasts in under a minute, and the carbon cost of the tools that help.</p>
+<div class="chapter-title-rule"></div>
+<div class="prose">
+
+<p class="drop-cap">You are a climate scientist. You need to know how much of the Amazon has been cleared in the last six months. The forest spans more than five million square kilometres — an area roughly the size of Western Europe. Sending field researchers is expensive, slow, and incomplete. Satellite images are available, but manually classifying each pixel of each image would take decades of researcher time. What would you do?</p>
+
+This is the problem that remote sensing AI has largely solved. Computer vision models trained on labelled satellite imagery now classify land cover — forest, cleared land, water, agricultural fields — at continental scales and near-daily frequency. Deforestation monitoring that once required years of human analysis now runs automatically, flagging newly cleared areas within days.
+
+## GraphCast: The Ten-Day Forecast
+
+For decades, weather forecasting has depended on numerical weather prediction: solving the equations of fluid dynamics and thermodynamics on a global grid. The European Centre for Medium-Range Weather Forecasts runs HRES, one of the world's most accurate systems. Producing a single ten-day global forecast takes about an hour on a supercomputer.
+
+In December 2023, Remi Lam and colleagues at Google DeepMind published GraphCast, a machine learning model trained on 39 years of historical weather data.
+
+<StatCards
+  id="stats-graphcast2"
+  stats={[
+    { text: '<1 min', label: 'GraphCast forecast on a single chip' },
+    { text: '~1 hr', label: 'HRES forecast on a supercomputer' },
+    { number: 90, display: '%+', divide: 1, label: 'Verification targets where GraphCast won' },
+  ]}
+/>
+
+<Accordion question="How does GraphCast predict weather without using the equations of physics?" id="accordion-graphcast">
+  GraphCast represents the atmosphere as a graph: grid points become nodes, and connections between nearby points become edges. The model learns to predict the state of the atmosphere at the next time step by processing this graph through multiple rounds of message-passing. During training on 39 years of ERA5 reanalysis data (a high-quality historical record of atmospheric conditions), the model learned the patterns of how weather evolves — without ever being given the Navier-Stokes equations or the laws of thermodynamics. It discovered the effective rules from data. This makes it fast and accurate for standard forecasting, but it cannot simulate atmospheric conditions that don't appear in the historical record, such as truly unprecedented climate events.
+</Accordion>
+
+<StudyNote text="GraphCast's accuracy on extreme weather events — heatwaves, tropical cyclones, atmospheric rivers — was particularly strong, outperforming HRES on 90.3% of the 1,380 validation targets." />
+
+## The Carbon Paradox
+
+<CalloutQuote text="The tools that monitor deforestation and model climate use significant amounts of energy. The technology that could help address climate change also contributes to it." />
+
+Training a single large language model can emit as much carbon dioxide as five cars over their entire lifetimes, according to a widely cited 2019 analysis by Strubell et al. Google reported that its AI systems consumed 10 to 15 percent of its global energy use in 2021, with that fraction growing. As AI systems scale, so does their energy footprint.
+
+The irony runs deep. GraphCast runs inference on a single chip in under a minute — far more energy-efficient than HRES. But the training of GraphCast itself consumed significant compute. Remote sensing models that monitor deforestation require GPU farms to process satellite imagery continuously. The tools that help us measure and respond to climate change add to the emissions they measure.
+
+This is not an argument against using AI in climate science. The efficiency gains from better weather forecasting and optimised energy grids likely outweigh training costs. But it is an argument for measuring and reporting those costs honestly — something the field has been slow to do.
+
+## Conservation at Scale
+
+Beyond climate, AI is transforming conservation biology. Acoustic monitoring models identify species from field recordings. Computer vision systems count wildlife populations from aerial photographs. DNA analysis pipelines identify species from environmental samples. Satellite tracking models predict migration patterns.
+
+A 2021 study used deep learning to map the distribution of individual trees across West Africa from satellite imagery — more than three billion trees across a 1.3 million square kilometre region. The survey would have been impossible with conventional methods. The model made it tractable.
+
+These tools do not solve the underlying drivers of biodiversity loss. They provide the data needed to understand what is being lost, where, and how fast. Whether that data is used to change policy depends on political will, not algorithm quality.
+
+</div>
+<PageNav prev={{ slug: "12-the-physicists-new-instrument", number: 12, title: "The Physicist's New Instrument", part: 4, published: true }} next={{ slug: "14-the-algorithm-in-the-courtroom", number: 14, title: "The Algorithm in the Courtroom", part: 4, published: true }} />
+</ChapterLayout>

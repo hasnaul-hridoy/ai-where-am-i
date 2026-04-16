@@ -1,0 +1,70 @@
+---
+/**
+ * FunnelChart.astro
+ * Animated horizontal bar funnel — bars grow in sequence when scrolled into view.
+ * Used for the Halicin search funnel in Chapter 1.
+ */
+
+interface FunnelStep {
+  label: string;
+  value: string;      // Display text inside bar
+  widthPct: number;   // Bar width as percentage of container (1-100)
+  color: string;      // CSS gradient string or hex color
+}
+
+interface Props {
+  steps: FunnelStep[];
+  footer?: string;
+}
+
+const { steps, footer } = Astro.props;
+---
+
+<div class="funnel-chart" id="funnel-container">
+  {steps.map((step, i) => (
+    <>
+      <div class="funnel-step">
+        <div class="funnel-label">{step.label}</div>
+        <div class="funnel-bar-track">
+          <div
+            class="funnel-bar"
+            data-width={step.widthPct}
+            style={`background: ${step.color};`}
+          >
+            {step.value}
+          </div>
+        </div>
+      </div>
+
+      {/* Arrow between steps — not after the last one */}
+      {i < steps.length - 1 && (
+        <div class="funnel-arrow">&#8595;</div>
+      )}
+    </>
+  ))}
+</div>
+
+<script>
+  // Animate bars when the funnel scrolls into view
+  const funnel = document.getElementById('funnel-container');
+  if (funnel) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (!entries[0].isIntersecting) return;
+
+        funnel.querySelectorAll('.funnel-bar').forEach((bar, i) => {
+          const element = bar as HTMLElement;
+          const targetWidth = element.dataset.width ?? '100';
+          setTimeout(() => {
+            element.style.width = `${targetWidth}%`;
+          }, i * 300); // Stagger each bar by 300ms
+        });
+
+        observer.disconnect();
+      },
+      { threshold: 0.3 }
+    );
+
+    observer.observe(funnel);
+  }
+</script>

@@ -1,0 +1,75 @@
+---
+title: "The Soil"
+part: 2
+partLabel: "Part II — The Roots"
+subtitle: "The statistical foundations that everything in AI grows from."
+published: true
+---
+
+import ChapterLayout from '../../layouts/ChapterLayout.astro';
+import CalloutQuote from '../../components/CalloutQuote.astro';
+import StudyNote from '../../components/StudyNote.astro';
+import Accordion from '../../components/Accordion.astro';
+import PageNav from '../../components/PageNav.astro';
+
+<ChapterLayout title="The Soil" chapterSlug="03-the-soil">
+<div class="chapter-breadcrumb"><a href="/">AI: Where Am I?</a><span class="sep">&rsaquo;</span><a href="#">Part II — The Roots</a><span class="sep">&rsaquo;</span><span>Chapter 3</span></div>
+<div class="part-badge">Part II — The Roots</div>
+<h1 class="chapter-title">The Soil</h1>
+<p class="chapter-subtitle">The statistical foundations that everything in AI grows from.</p>
+<div class="chapter-title-rule"></div>
+<div class="prose">
+
+<p class="drop-cap">In the early 1990s, Judea Pearl was making an argument that most of his colleagues in statistics considered somewhere between misguided and heretical. Pearl, a computer scientist at UCLA, believed that the entire framework of classical statistics had a blind spot: it could tell you that two variables were associated, but it could not, by design, tell you whether one caused the other.</p>
+
+This was not an oversight. It was doctrine. Since the early twentieth century, mainstream statistics had treated causation as a concept too slippery for formal analysis. Statistics was the study of data reduction, not of causes.
+
+## Three Levels of Reasoning
+
+Pearl organized his insight into the Ladder of Causation — a hierarchy of three levels that defines what any intelligence, human or machine, can know about the world.
+
+**Rung 1 — Association (Seeing).** Classical statistics. You observe data and ask: given that a patient smokes, what is the probability they develop lung cancer? A barometer correlates with storms. At this level, that is all you can say.
+
+**Rung 2 — Intervention (Doing).** If we force a patient to stop smoking, does cancer risk decrease? This is different. Smashing a barometer does not prevent rain. Pearl formalised this with the *do*-operator: P(Y\|do(X)) — the probability of an outcome when you actively set a variable, not merely observe it.
+
+**Rung 3 — Counterfactual (Imagining).** Would this patient have been healthy if they had not smoked? This is the level of courts and doctors. Classical statistics operates entirely on rung one. A machine trained purely on correlations inherits this limitation.
+
+## Updating Beliefs with Evidence
+
+<StudyNote text="Bayes' theorem was published posthumously in 1763. Thomas Bayes, an English minister, had been reluctant to publish it during his lifetime." />
+
+If causation is one pillar of the statistical soil, probability is the other — specifically, Bayes' theorem. Its message sounds obvious until you try to apply it: the probability of a hypothesis given the evidence depends not just on how well the evidence fits the hypothesis, but also on how likely the hypothesis was *before* you saw the evidence.
+
+<CalloutQuote text="A test that is 99.9999% accurate still produces mostly false positives when the disease affects only one person in a hundred thousand." />
+
+In a population of 100,000, roughly ten people will test positive by mistake, while only one person actually has the disease. Despite extraordinary accuracy, most positive results are false alarms. This is why every ML system that makes predictions must account for base rates — not just accuracy, but *given that it flagged this case, how likely is the flag to be correct?*
+
+## What Would You Do?
+
+You are a hospital administrator reviewing five years of treatment data. Patients who received Drug A had a 70% recovery rate. Drug B had 80%. The numbers are clear. Drug B appears better.
+
+But when you break down by severity: among mild cases, Drug A had 90% and Drug B 85%. Among severe cases, Drug A had 50% and Drug B 45%. Drug A was better in both subgroups.
+
+<Accordion question="Why did the aggregated numbers give the wrong answer? (Simpson's Paradox)" id="accordion-simpsons">
+  The aggregated data favoured Drug B only because sicker patients were more likely to receive Drug A, dragging its average down. When you control for severity — the confounding variable — Drug A wins in every subgroup. This is Simpson's Paradox: a pattern in aggregated data reverses when you look at subgroups. Pearl used it as a central example of why correlation-based reasoning fails. A model trained on this hospital data would recommend Drug B. It would be wrong. Only by understanding the causal structure can you reach the right answer.
+</Accordion>
+
+## Finding Patterns in Noise
+
+The third foundation is regression — a technique so embedded in scientific practice that most researchers use it without thinking of it as a precursor to AI. Francis Galton introduced it in the 1880s while studying heights: unusually tall parents had children who were tall, but not quite as tall. Heights "regressed" toward the mean.
+
+What most researchers learn in their first statistics course, and what McElreath (2020) made explicit, is that linear regression is mathematically identical to the simplest possible neural network: a single neuron with no activation function. Logistic regression adds a sigmoid activation, making it equivalent to a single neuron that outputs probabilities.
+
+The methods that underpin modern deep learning are not new inventions. They are extensions, carried to enormous scale, of techniques that Galton and his successors developed more than a century ago. Overfitting, cross-validation, regularization, the bias-variance tradeoff — these are standard statistical concepts that predate neural networks by decades.
+
+## The Move 37 Moment: Causation Gets Its Award
+
+In 2011, the ACM awarded the Turing Award to Judea Pearl for "fundamental contributions to artificial intelligence through the development of a calculus for probabilistic and causal reasoning." The award was a formal recognition that Pearl's framework — structural causal models, the do-calculus, the counterfactual hierarchy — was not a philosophical curiosity but a foundational tool.
+
+The most powerful predictive models today are correlation machines of extraordinary sophistication. They sit on the first rung of Pearl's ladder. Whether they need to climb higher — whether correlation is enough or causation is required for genuinely intelligent behavior — remains one of the most contested questions in the field.
+
+Statistics provided the soil. But statistics alone does not explain how a machine can learn to recognize a face, translate a sentence, or fold a protein. Those tasks require a different kind of architecture. That architecture is the subject of the next chapter.
+
+</div>
+<PageNav prev={{ slug: "02-the-dream-and-the-winters", number: 2, title: "The Dream and the Winters", part: 2, published: true }} next={{ slug: "04-the-seed", number: 4, title: "The Seed", part: 2, published: true }} />
+</ChapterLayout>

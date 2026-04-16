@@ -1,0 +1,228 @@
+/*
+ * ============================================================
+ * LAYOUT
+ * Page structure, grid, sidebar, responsive breakpoints
+ * ============================================================
+ */
+
+
+/* ===== HEADER ===== */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  height: var(--header-height);
+  background-color: var(--color-header-bg);
+  display: flex;
+  align-items: center;
+  padding: 0 var(--space-6);
+  width: 100%;
+}
+
+.site-header__inner {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.site-header__brand {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--color-sidebar-text);
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  transition: opacity 0.2s;
+}
+
+.site-header__brand:hover {
+  opacity: 0.8;
+  color: var(--color-sidebar-text);
+}
+
+/* Hamburger — hidden on desktop, shown on mobile */
+.site-header__menu-btn {
+  display: none;
+  position: absolute;
+  right: var(--space-6);
+  background: none;
+  border: 1px solid rgba(232, 240, 224, 0.25);
+  border-radius: var(--radius-sm);
+  padding: var(--space-2) var(--space-4);
+  cursor: pointer;
+  color: var(--color-sidebar-text);
+  font-family: var(--font-sans);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  align-items: center;
+  gap: var(--space-2);
+  transition: background-color 0.2s;
+}
+
+.site-header__menu-btn:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+
+/* ===== PAGE FRAME: 70% CENTERED CONTENT BOX ===== */
+
+.page-frame {
+  width: var(--content-frame-width);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: var(--sidebar-width) 1fr;
+  min-height: calc(100vh - var(--header-height) - 64px);
+}
+
+
+/* ===== SIDEBAR WRAPPER (provides the padding for the floaty effect) ===== */
+
+.sidebar-wrapper {
+  position: sticky;
+  top: var(--header-height);
+  height: calc(100vh - var(--header-height));
+  padding: var(--sidebar-panel-padding) 0 var(--sidebar-panel-padding) var(--sidebar-panel-padding);
+}
+
+/* Sidebar panel — the actual rounded floaty card */
+.sidebar-panel {
+  height: 100%;
+  overflow-y: auto;
+  background-color: var(--color-sidebar-bg);
+  border-radius: var(--radius-xl);
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow-sidebar);
+}
+
+.sidebar-panel::-webkit-scrollbar {
+  width: 3px;
+}
+
+.sidebar-panel::-webkit-scrollbar-thumb {
+  background: rgba(232, 240, 224, 0.2);
+  border-radius: var(--radius-full);
+}
+
+
+/* ===== MAIN CONTENT AREA ===== */
+
+.chapter-main {
+  background-color: var(--color-bg-content);
+  padding: 40px 64px 80px;
+  min-height: calc(100vh - var(--header-height));
+}
+
+
+/* ===== FOOTER ===== */
+
+.site-footer {
+  background-color: var(--color-header-bg);
+  color: #A0B898;
+  padding: 20px var(--space-6);
+  text-align: center;
+  font-size: var(--font-size-xs);
+  width: 100%;
+}
+
+.site-footer a {
+  color: var(--color-sidebar-text);
+  text-decoration: none;
+}
+
+.site-footer a:hover {
+  color: #F0E8C8;
+}
+
+
+/* ===== MOBILE OVERLAY (sidebar backdrop) ===== */
+
+.sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(42, 20, 16, 0.5);
+  z-index: 200;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+  display: none;
+}
+
+.sidebar-overlay.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+
+/* ===================================================================
+   RESPONSIVE BREAKPOINTS
+   =================================================================== */
+
+/* --- Large screens: expand frame slightly --- */
+@media (max-width: 1400px) {
+  :root {
+    --content-frame-width: 80%;
+  }
+}
+
+/* --- Medium screens: expand further --- */
+@media (max-width: 1100px) {
+  :root {
+    --content-frame-width: 92%;
+  }
+
+  .chapter-main {
+    padding: 32px 40px 80px;
+  }
+}
+
+/* --- Tablet/Mobile: sidebar becomes overlay --- */
+@media (max-width: 900px) {
+  .page-frame {
+    grid-template-columns: 1fr;
+    width: 100%;
+  }
+
+  /* Sidebar wrapper becomes a fixed slide-out panel */
+  .sidebar-wrapper {
+    position: fixed;
+    top: 0;
+    left: -300px;
+    width: 280px;
+    height: 100vh;
+    padding: 0;
+    z-index: 210;
+    transition: left 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .sidebar-wrapper.is-open {
+    left: 0;
+  }
+
+  /* On mobile, sidebar fills its wrapper (no border-radius on edges) */
+  .sidebar-panel {
+    border-radius: 0;
+    height: 100vh;
+  }
+
+  .sidebar-overlay {
+    display: block;
+  }
+
+  .site-header__menu-btn {
+    display: flex;
+  }
+
+  .chapter-main {
+    padding: 24px 20px 60px;
+  }
+}
+
+/* --- Small mobile --- */
+@media (max-width: 480px) {
+  .chapter-main {
+    padding: 20px 16px 60px;
+  }
+}

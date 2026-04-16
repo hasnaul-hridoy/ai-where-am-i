@@ -1,0 +1,16 @@
+---
+/**
+ * CalloutQuote.astro
+ * Left-bordered quote box — used for key questions and thesis statements.
+ */
+
+interface Props {
+  text: string;
+}
+
+const { text } = Astro.props;
+---
+
+<div class="callout-quote">
+  <p>&ldquo;{text}&rdquo;</p>
+</div>

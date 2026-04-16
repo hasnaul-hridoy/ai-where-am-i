@@ -1,0 +1,35 @@
+---
+/**
+ * [slug].astro
+ * Dynamic route — renders any chapter by its slug.
+ * Uses import.meta.glob to discover MDX files at build time.
+ */
+import { chapters, getAdjacentChapters } from '../../data/chapters';
+import type { Chapter } from '../../data/chapters';
+
+// Statically import all chapter MDX files
+const chapterModules = import.meta.glob('../../content/chapters/*.mdx', { eager: true });
+
+export async function getStaticPaths() {
+  const modules = import.meta.glob('../../content/chapters/*.mdx', { eager: true });
+
+  return Object.keys(modules).map(filePath => {
+    // "../../content/chapters/01-the-ai-you-think-you-know.mdx" → "01-the-ai-you-think-you-know"
+    const slug = filePath.split('/').pop()?.replace('.mdx', '') ?? '';
+    return { params: { slug } };
+  });
+}
+
+const { slug } = Astro.params;
+
+// Get the MDX module for this slug
+const modulePath = Object.keys(chapterModules).find(p => p.includes(slug));
+if (!modulePath) throw new Error(`No MDX file found for slug: ${slug}`);
+
+const module = chapterModules[modulePath] as { default: any; frontmatter?: any };
+const Component = module.default;
+
+const { prev, next } = getAdjacentChapters(slug);
+---
+
+<Component prev={prev} next={next} />

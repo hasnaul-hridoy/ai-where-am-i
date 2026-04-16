@@ -1,0 +1,26 @@
+---
+/**
+ * Header.astro
+ * Sticky top bar with centered brand name and mobile menu button.
+ */
+---
+
+<header class="site-header">
+  <div class="site-header__inner">
+
+    <a href="/" class="site-header__brand">AI: Where Am I?</a>
+
+    <!-- Mobile hamburger — shown only on small screens via CSS -->
+    <button
+      class="site-header__menu-btn"
+      id="menu-btn"
+      aria-label="Open navigation menu"
+      aria-expanded="false"
+      aria-controls="sidebar-wrapper"
+      onclick="openSidebar()"
+    >
+      <span>&#9776;</span> Menu
+    </button>
+
+  </div>
+</header>

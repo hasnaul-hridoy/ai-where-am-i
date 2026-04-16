@@ -1,0 +1,87 @@
+---
+title: "The Doctor's Dilemma"
+part: 4
+partLabel: "Part IV — The Canopy"
+subtitle: "AI in medicine: twelve million misdiagnoses, novel antibiotics, and the bias baked into prediction."
+published: true
+---
+
+import ChapterLayout from '../../layouts/ChapterLayout.astro';
+import StatCards from '../../components/StatCards.astro';
+import CalloutQuote from '../../components/CalloutQuote.astro';
+import StudyNote from '../../components/StudyNote.astro';
+import Accordion from '../../components/Accordion.astro';
+import PageNav from '../../components/PageNav.astro';
+
+<ChapterLayout title="The Doctor's Dilemma" chapterSlug="11-the-doctors-dilemma">
+<div class="chapter-breadcrumb"><a href="/">AI: Where Am I?</a><span class="sep">&rsaquo;</span><a href="#">Part IV — The Canopy</a><span class="sep">&rsaquo;</span><span>Chapter 11</span></div>
+<div class="part-badge">Part IV — The Canopy</div>
+<h1 class="chapter-title">The Doctor's Dilemma</h1>
+<p class="chapter-subtitle">AI in medicine: twelve million misdiagnoses, novel antibiotics, and the bias baked into prediction.</p>
+<div class="chapter-title-rule"></div>
+<div class="prose">
+
+<p class="drop-cap">You are an emergency physician. A 56-year-old man arrives with chest pain, vision problems, and numbness on the left side of his face. The symptoms point to a ministroke. An echocardiogram reveals a small hole between the heart's upper chambers, present in 15 to 20 percent of adults. The cardiologist recommends a procedure to close it. But you order a wearable heart monitor that records continuously for ten to fourteen days. It reveals what the echocardiogram missed: intermittent atrial fibrillation that appears only occasionally — invisible to a snapshot test. The patient needed a blood thinner, not surgery.</p>
+
+The correct diagnosis required data collected over time. This is the kind of problem that artificial intelligence was supposed to solve in medicine. In some cases, it has. In others, it has introduced new problems that are harder to see than the ones it fixed.
+
+## Twelve Million Mistakes
+
+<StudyNote text="According to Topol (2019), more than ten thousand people die within a week of being sent home from an emergency room despite having an undiagnosed life-threatening condition." />
+
+Eric Topol opens *Deep Medicine* with a number that is difficult to absorb: twelve million significant misdiagnoses occur in the United States every year. In autopsy studies, 40 percent of physicians who were completely certain of their diagnosis turned out to be wrong.
+
+These errors are not caused by incompetent doctors. The average clinic visit for an established patient in the US lasts seven minutes. Eighty percent of text in electronic health records is copied and pasted from previous notes. Nearly half of practicing physicians report symptoms of burnout.
+
+<StatCards
+  id="stats-medicine"
+  stats={[
+    { number: 12000000, display: 'M', divide: 1000000, decimals: 0, label: 'Significant misdiagnoses per year (US)' },
+    { number: 7, display: ' min', divide: 1, label: 'Average clinic visit duration' },
+    { number: 80, display: '%', divide: 1, label: 'EHR text that is copied and pasted' },
+  ]}
+/>
+
+The promise of AI in medicine rests on a straightforward observation: machines do not get tired, do not copy and paste, and can process 125 gigabytes of genomic data without fatigue.
+
+## Patterns Humans Cannot See
+
+The earliest convincing results came from image recognition. In 2017, Andre Esteva and colleagues at Stanford trained a convolutional neural network on 129,450 clinical images of skin lesions. On biopsy-confirmed test cases, the network matched 21 board-certified dermatologists at classifying both benign versus malignant lesions and melanoma versus non-melanoma. The model used no hand-engineered features — it learned directly from pixels.
+
+Similar results followed in ophthalmology (diabetic retinopathy detection) and radiology (pulmonary nodule detection). By 2020, the FDA had approved more than 60 AI-enabled imaging devices for clinical use.
+
+## The Move 37 Moment: Nineteen Hours
+
+In 2019, at Rady Children's Institute for Genomic Medicine, a team set a Guinness World Record. They sequenced and interpreted a newborn's entire genome in 19.5 hours. The patient was a baby boy seizing continuously, with no clear cause.
+
+The AI pipeline processed 125 gigabytes of raw genomic data, narrowed five million genetic variants to 962 disease-associated candidates, and identified a single mutation in the ALDH7A1 gene, present in fewer than 0.01 percent of the population. The condition was treatable with vitamin B6 and arginine supplementation. Without the diagnosis, the seizures would have caused progressive brain damage.
+
+<Accordion question="How does AI narrow five million variants to one diagnosis?" id="accordion-genomics">
+  Genomic interpretation works in layers. First, most variants are common in the population and can be filtered out (they're unlikely to cause rare disease). Second, the remaining rare variants are compared against databases of known disease-causing mutations. Third, machine learning models score the remaining candidates based on features like whether the variant affects a protein-coding region, whether similar mutations in the same gene are known to cause disease, and whether the variant is consistent with the patient's observed symptoms (phenotype). Natural language processing extracts phenotype features from clinical notes. The final ranking is probabilistic, not certain — but it focuses human review on a manageable number of candidates.
+</Accordion>
+
+<CalloutQuote text="The halicin case belongs here too. What the machine provided was speed and completeness — not new science. Every piece of the puzzle was already known." />
+
+## When the Algorithm Gets It Wrong
+
+In 2019, a widely deployed healthcare algorithm was found to be systematically biased against Black patients. Hospitals used it to identify high-risk patients for additional care. Black patients were less likely to be referred despite identical health conditions.
+
+The cause was not a programming error. The algorithm predicted healthcare spending, not healthcare needs. Because Black patients historically had less access to expensive care, their spending was lower, and the algorithm interpreted lower spending as lower risk.
+
+<Accordion question="Why is predicting spending different from predicting need?" id="accordion-bias">
+  Healthcare spending reflects what care a patient actually received, which depends on access, insurance, geography, and systemic biases. A patient who couldn't afford a specialist visit generates less spending data — and the algorithm learns that low-spending patients are low-risk. In Pearl's language (Chapter 3), the algorithm operated on rung one: observing correlations in historical spending data. It never asked the counterfactual question — what would happen if this patient had equal access to care? The model was accurate at what it predicted. It was predicting the wrong thing.
+</Accordion>
+
+A 1997 study found an even more dangerous failure: a model predicted that having asthma *reduced* the risk of dying from pneumonia. Statistically correct — asthmatic patients died less often in the training data. The reason: hospitals already sent asthmatic pneumonia patients directly to intensive care. The model learned the effect of a safety protocol and would have eliminated it if used for triage. A good prediction is not always a good decision.
+
+## The Seven-Minute Problem
+
+Topol makes an argument that reframes the conversation: the goal should not be to replace doctors, but to give them back time. If a machine reads a scan in seconds rather than minutes, the radiologist can spend those minutes talking to the patient. If NLP extracts clinical features from records, physicians can stop copying and pasting.
+
+Seventy-five percent of US patients receiving the top ten drugs do not experience the expected benefit. AI's most defensible role may be matching the right treatment to the right patient — not replacing diagnosis, but enabling genuinely personalised care.
+
+The successes are real. The failures are also real. The field is caught between a technology that can process data at a scale humans cannot and institutions that have not figured out how to use it without amplifying existing inequities.
+
+</div>
+<PageNav prev={{ slug: "10-teaching-machines-to-create", number: 10, title: "Teaching Machines to Create", part: 3, published: true }} next={{ slug: "12-the-physicists-new-instrument", number: 12, title: "The Physicist's New Instrument", part: 4, published: true }} />
+</ChapterLayout>

@@ -1,0 +1,99 @@
+---
+/**
+ * ChapterLayout.astro
+ * Shared layout for all chapter pages.
+ * Handles: header, sidebar, main content, footer, sidebar toggle JS.
+ */
+import Header from '../components/Header.astro';
+import Sidebar from '../components/Sidebar.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+import '../styles/layout.css';
+import '../styles/components.css';
+
+interface Props {
+  title: string;         // Browser tab title
+  chapterSlug: string;   // Used to highlight active item in sidebar
+}
+
+const { title, chapterSlug } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="AI: Where Am I? — A non-technical guide to AI across scientific fields." />
+  <title>{title} — AI: Where Am I?</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+</head>
+
+<body>
+
+  <!-- Mobile sidebar backdrop -->
+  <div
+    class="sidebar-overlay"
+    id="sidebar-overlay"
+    aria-hidden="true"
+    onclick="closeSidebar()"
+  ></div>
+
+  <!-- Sticky top bar -->
+  <Header />
+
+  <!-- 70% centered content frame -->
+  <div class="page-frame">
+
+    <!-- Left sidebar (sticky, floaty, rounded) -->
+    <Sidebar currentSlug={chapterSlug} />
+
+    <!-- Main reading area -->
+    <main class="chapter-main" id="chapter-main">
+      <slot />
+    </main>
+
+  </div>
+
+  <!-- Full-width footer -->
+  <Footer />
+
+  <script>
+    /**
+     * Sidebar open/close for mobile.
+     * These functions are called from Header (hamburger) and Sidebar (close button).
+     */
+    function openSidebar() {
+      const wrapper = document.getElementById('sidebar-wrapper');
+      const overlay = document.getElementById('sidebar-overlay');
+      const menuBtn = document.getElementById('menu-btn');
+
+      wrapper?.classList.add('is-open');
+      overlay?.classList.add('is-visible');
+      menuBtn?.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden'; // Prevent scroll when sidebar is open
+    }
+
+    function closeSidebar() {
+      const wrapper = document.getElementById('sidebar-wrapper');
+      const overlay = document.getElementById('sidebar-overlay');
+      const menuBtn = document.getElementById('menu-btn');
+
+      wrapper?.classList.remove('is-open');
+      overlay?.classList.remove('is-visible');
+      menuBtn?.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    }
+
+    // Close sidebar when pressing Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeSidebar();
+    });
+
+    // Make functions available globally (called inline by buttons)
+    (window as any).openSidebar  = openSidebar;
+    (window as any).closeSidebar = closeSidebar;
+  </script>
+
+</body>
+</html>

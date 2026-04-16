@@ -1,0 +1,63 @@
+---
+title: "Teaching Machines to Create"
+part: 3
+partLabel: "Part III — The Branches"
+subtitle: "GANs, diffusion models, and how generative AI actually works."
+published: true
+---
+
+import ChapterLayout from '../../layouts/ChapterLayout.astro';
+import CalloutQuote from '../../components/CalloutQuote.astro';
+import StudyNote from '../../components/StudyNote.astro';
+import Accordion from '../../components/Accordion.astro';
+import PageNav from '../../components/PageNav.astro';
+
+<ChapterLayout title="Teaching Machines to Create" chapterSlug="10-teaching-machines-to-create">
+<div class="chapter-breadcrumb"><a href="/">AI: Where Am I?</a><span class="sep">&rsaquo;</span><a href="#">Part III — The Branches</a><span class="sep">&rsaquo;</span><span>Chapter 10</span></div>
+<div class="part-badge">Part III — The Branches</div>
+<h1 class="chapter-title">Teaching Machines to Create</h1>
+<p class="chapter-subtitle">GANs, diffusion models, and how generative AI actually works.</p>
+<div class="chapter-title-rule"></div>
+<div class="prose">
+
+<p class="drop-cap">Everything in this book so far has been about recognition — classification, prediction, translation. A network takes an input and produces an output that describes something about it. Generative AI is different. It produces something new: an image that has never existed, a molecule that has never been synthesized, a piece of music that has never been played. The question is how.</p>
+
+## What Would You Do?
+
+Imagine you want to teach a machine to generate realistic photographs of human faces. You have a large dataset of real photographs. You cannot simply tell the machine "make something like these" — that instruction has no formal content. You need a way to measure whether the output is good.
+
+One approach: train a second network to be a critic. Show it real images and fake images, and train it to tell them apart. Train the generator to fool the critic. Train the critic to not be fooled. Iterate.
+
+## The Forger and the Detective
+
+In 2014, Ian Goodfellow described exactly this idea in a paper that introduced Generative Adversarial Networks (GANs). Two networks trained simultaneously in opposition.
+
+<CalloutQuote text="The generative model can be thought of as analogous to a team of counterfeiters, trying to produce fake currency and use it without detection, while the discriminative model is analogous to the police, trying to detect the counterfeit currency." />
+
+The generator starts by producing noise. The discriminator easily identifies it as fake. The generator adjusts to produce something slightly more realistic. The discriminator adjusts to catch the new fakes. Over thousands of iterations, the generator learns to produce images indistinguishable from real ones — because it has been optimised specifically against the best critic available.
+
+<StudyNote text="Goodfellow described the GAN concept after an argument at a bar with fellow researchers. He went home that night, coded it up, and it worked on the first try." />
+
+<Accordion question="What is the mode collapse problem in GANs?" id="accordion-mode-collapse">
+  GANs have a fundamental instability: the generator can "collapse" to producing only one type of output. If generating a particular kind of image consistently fools the discriminator, the generator may learn to produce only that image, ignoring the full diversity of the training data. This is mode collapse. The generator finds a local optimum — one that fools the discriminator — but fails to represent the full distribution. Training GANs stably required years of research into loss functions, architectures, and training procedures before the results became reliably high quality.
+</Accordion>
+
+## Diffusion Models: A Different Strategy
+
+GANs dominated generative AI from 2014 to roughly 2021. Then diffusion models arrived and produced qualitatively better results on image generation tasks.
+
+The idea is counterintuitive. Rather than training a generator to produce images from noise, train a network to remove noise from images. Take a real image and gradually add random noise in small steps until it becomes pure static. Then train a neural network to reverse this process — to denoise an image, one step at a time.
+
+At inference time, you start with pure noise and run the denoising process in reverse. The model "imagines" an image by gradually removing the noise, guided by what it has learned about the structure of real images. DALL-E, Stable Diffusion, and Midjourney all use variants of this approach.
+
+## Generative AI in Science
+
+The generative models that captured public attention were image and text generators. But the same underlying principles applied to scientific domains with direct consequences.
+
+In drug discovery, generative models designed new molecular structures with desired properties rather than screening existing databases. In materials science, models like GNoME generated novel crystal configurations. In protein design, researchers used generative models to create proteins with specific functions that did not exist in nature.
+
+These applications use the same core insight as DALL-E: learn the distribution of valid structures from data, then sample from that distribution to generate new examples. The difference is that the "canvas" is not pixels but molecular graphs, crystal lattices, or amino acid sequences — and the stakes are not aesthetic but scientific.
+
+</div>
+<PageNav prev={{ slug: "09-teaching-machines-to-scale", number: 9, title: "Teaching Machines to Scale", part: 3, published: true }} next={{ slug: "11-the-doctors-dilemma", number: 11, title: "The Doctor's Dilemma", part: 4, published: true }} />
+</ChapterLayout>

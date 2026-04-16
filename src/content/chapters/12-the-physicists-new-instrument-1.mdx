@@ -1,0 +1,71 @@
+---
+title: "The Physicist's New Instrument"
+part: 4
+partLabel: "Part IV — The Canopy"
+subtitle: "AI in physics: 2.2 million new materials, fusion plasma control, and the limits of black-box discovery."
+published: true
+---
+
+import ChapterLayout from '../../layouts/ChapterLayout.astro';
+import StatCards from '../../components/StatCards.astro';
+import CalloutQuote from '../../components/CalloutQuote.astro';
+import StudyNote from '../../components/StudyNote.astro';
+import Accordion from '../../components/Accordion.astro';
+import PageNav from '../../components/PageNav.astro';
+
+<ChapterLayout title="The Physicist's New Instrument" chapterSlug="12-the-physicists-new-instrument">
+<div class="chapter-breadcrumb"><a href="/">AI: Where Am I?</a><span class="sep">&rsaquo;</span><a href="#">Part IV — The Canopy</a><span class="sep">&rsaquo;</span><span>Chapter 12</span></div>
+<div class="part-badge">Part IV — The Canopy</div>
+<h1 class="chapter-title">The Physicist's New Instrument</h1>
+<p class="chapter-subtitle">AI in physics: 2.2 million new materials, fusion plasma control, and the limits of black-box discovery.</p>
+<div class="chapter-title-rule"></div>
+<div class="prose">
+
+<p class="drop-cap">You are a materials scientist. Your laboratory needs a new solid electrolyte for a lithium-ion battery that charges faster and lasts longer than anything currently on the market. The electrolyte must be chemically stable, conduct lithium ions at high rates, remain solid at operating temperatures, and be made from abundant elements. The number of possible crystal structures you could synthesise is, for practical purposes, infinite. Experimental synthesis and testing of a single candidate takes weeks. You cannot test your way to the answer.</p>
+
+Until recently, the only option was educated guessing: start from a known crystal structure, substitute elements based on chemical intuition, synthesise, test, iterate. What if a model could propose crystal structures that no human had imagined, and predict which ones would be stable before you spent a single day in the laboratory?
+
+## The Move 37 Moment: Two Million New Materials
+
+In November 2023, a team at Google DeepMind led by Amil Merchant published a paper describing GNoME — Graph Networks for Materials Exploration. The model used graph neural networks to represent crystal structures as mathematical graphs, with atoms as nodes and chemical bonds as edges.
+
+<StatCards
+  id="stats-gnome2"
+  stats={[
+    { number: 48000, display: 'K', divide: 1000, label: 'Known stable crystals before GNoME' },
+    { number: 2200000, display: 'M', divide: 1000000, decimals: 1, label: 'New structures predicted by GNoME' },
+    { number: 736, display: '', divide: 1, label: 'Already confirmed in laboratories' },
+  ]}
+/>
+
+<CalloutQuote text="The model multiplied humanity's catalogue of known stable crystal structures by a factor of eight. In a single study." />
+
+The discoveries included candidates for next-generation lithium-ion conductors, solid electrolytes, and layered compounds for batteries and energy storage — exactly the materials the clean energy transition needs most.
+
+<Accordion question="How does a graph neural network represent a crystal structure?" id="accordion-gnn">
+  A crystal structure is a repeating arrangement of atoms in three-dimensional space. A graph neural network represents it as a mathematical graph: atoms become nodes, and the chemical bonds between them become edges. Each node carries information about the atom it represents (element, position). Each edge carries information about the bond (distance, bond type). The GNN processes this graph by passing messages between nodes — each atom aggregates information from its neighbors, building up a richer representation. After several rounds of message-passing, the network produces a prediction: is this arrangement thermodynamically stable? This approach is more powerful than treating the crystal as a flat list of atoms because it explicitly represents spatial relationships.
+</Accordion>
+
+## Plasma on a Leash
+
+<StudyNote text="A tokamak is a donut-shaped chamber that confines plasma using magnetic fields. The plasma reaches temperatures of 150 million degrees Celsius — ten times hotter than the core of the sun." />
+
+Nuclear fusion has been "thirty years away" for sixty years. The joke reflects a genuine engineering challenge: containing plasma at temperatures of 150 million degrees Celsius long enough to extract net energy. The plasma is unstable. It can touch the reactor walls in milliseconds if the magnetic field configuration isn't maintained precisely. Human operators cannot react fast enough.
+
+In 2022, a team from DeepMind and the Swiss Plasma Center published results from the TCV tokamak demonstrating that a reinforcement learning controller could maintain plasma configurations that were impossible to achieve with previous methods. The RL agent controlled 19 magnetic coils simultaneously, making thousands of adjustments per second, responding to plasma instabilities faster than any human or hand-coded system could.
+
+The same principles from Chapter 7 — AlphaGo's trial-and-error learning — applied directly to plasma physics. The agent was not programmed with the physics of plasma confinement. It learned what worked by trying.
+
+## The Black Box Problem
+
+<CalloutQuote text="GNoME predicted 2.2 million stable structures. It cannot explain why any particular structure is stable. The prediction and the understanding are separate." />
+
+This is the central tension of AI in physics. A model can predict that a crystal will be stable. It cannot derive the physical principles from which that stability follows. A human materials scientist, given enough time, can explain why a structure is stable in terms of electron configurations, bond energies, and crystal field theory. The model gives you the answer without the explanation.
+
+For some applications, this is acceptable. If you want to find a better battery electrolyte and the model points you to 736 confirmed candidates, the lack of explanation does not prevent the discovery. But for building physical theory — for understanding *why* the world behaves as it does — a prediction machine is not sufficient.
+
+Physicists working with AI tools are developing new norms for this tension. Results from AI-assisted discovery are typically reported alongside experimental confirmation. The model proposes; the laboratory verifies; the physicist explains. This division of labour is new, and the field is still working out what it means for scientific credit, publication standards, and the nature of physical knowledge.
+
+</div>
+<PageNav prev={{ slug: "11-the-doctors-dilemma", number: 11, title: "The Doctor's Dilemma", part: 4, published: true }} next={{ slug: "13-the-planets-ledger", number: 13, title: "The Planet's Ledger", part: 4, published: true }} />
+</ChapterLayout>

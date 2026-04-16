@@ -1,0 +1,18 @@
+---
+/**
+ * StudyNote.astro
+ * Floated right-margin callout for supplementary context.
+ * On mobile, it drops out of float and goes full-width.
+ */
+
+interface Props {
+  text: string;
+}
+
+const { text } = Astro.props;
+---
+
+<aside class="study-note">
+  <div class="study-note__label">Study Note</div>
+  <em>{text}</em>
+</aside>

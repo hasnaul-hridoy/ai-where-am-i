@@ -1,0 +1,102 @@
+---
+/**
+ * StatCards.astro
+ * A row of 3 stat cards with numbers that animate (count up) when scrolled into view.
+ *
+ * Usage in MDX:
+ *   <StatCards stats={[
+ *     { number: 48000, display: 'K', divide: 1000, label: 'Known crystals\nbefore GNoME' },
+ *     { number: 2200000, display: 'M', divide: 1000000, decimals: 1, label: 'New structures\npredicted' },
+ *     { number: 381000, display: 'K', divide: 1000, label: 'Genuinely novel\nentries' },
+ *   ]} id="stats-gnome" />
+ */
+
+interface Stat {
+  number?: number;     // Numeric value to count up to
+  text?: string;       // OR static text (e.g. "<1 min")
+  display?: string;    // Suffix after the number (e.g. "K", "M", "%+")
+  divide?: number;     // Divide target by this for display (e.g. 1000 → "48K")
+  decimals?: number;   // Decimal places (default 0)
+  label: string;       // Label text below the number
+}
+
+interface Props {
+  stats: Stat[];
+  id?: string;
+}
+
+const { stats, id } = Astro.props;
+---
+
+<div class="stat-row" id={id}>
+  {stats.map(stat => (
+    <div class="stat-card">
+      <span
+        class="stat-card__number"
+        data-target={stat.number}
+        data-suffix={stat.display ?? ''}
+        data-divide={stat.divide ?? 1}
+        data-decimals={stat.decimals ?? 0}
+        data-text={stat.text}
+      >
+        {/* Initial value — JS will update this on scroll */}
+        {stat.text ?? '0'}
+      </span>
+      <div class="stat-card__label">{stat.label}</div>
+    </div>
+  ))}
+</div>
+
+<script>
+  // Animate all stat rows when they scroll into view
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+
+        // Count-up animation for numeric stats
+        entry.target.querySelectorAll('.stat-card__number[data-target]').forEach(el => {
+          const element = el as HTMLElement;
+          if (element.dataset.done) return;
+          element.dataset.done = '1';
+
+          const target   = Number(element.dataset.target);
+          const suffix   = element.dataset.suffix ?? '';
+          const divide   = Number(element.dataset.divide) || 1;
+          const decimals = Number(element.dataset.decimals) || 0;
+          const duration = 1500;
+          const startTime = performance.now();
+
+          function tick(now: number) {
+            const progress = Math.min((now - startTime) / duration, 1);
+            const eased = 1 - Math.pow(1 - progress, 3); // easeOutCubic
+            const value = (target * eased) / divide;
+            element.textContent = value.toFixed(decimals) + suffix;
+            if (progress < 1) requestAnimationFrame(tick);
+          }
+
+          requestAnimationFrame(tick);
+        });
+
+        // Fade-in for static text stats (e.g. "<1 min")
+        entry.target.querySelectorAll('.stat-card__number[data-text]').forEach(el => {
+          const element = el as HTMLElement;
+          if (element.dataset.done) return;
+          element.dataset.done = '1';
+
+          element.style.opacity = '0';
+          element.style.transition = 'opacity 0.6s ease';
+          setTimeout(() => {
+            element.textContent = element.dataset.text ?? '';
+            element.style.opacity = '1';
+          }, 300);
+        });
+
+        observer.unobserve(entry.target);
+      });
+    },
+    { threshold: 0.3 }
+  );
+
+  document.querySelectorAll('.stat-row').forEach(row => observer.observe(row));
+</script>
