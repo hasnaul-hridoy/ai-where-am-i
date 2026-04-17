@@ -6,6 +6,7 @@
 import '../styles/global.css';
 import '../styles/layout.css';
 import '../styles/components.css';
+import Footer from '../components/Footer.astro';
 import { chapters, parts, getChaptersByPart } from '../data/chapters';
 ---
 
@@ -84,9 +85,7 @@ import { chapters, parts, getChaptersByPart } from '../data/chapters';
   </main>
 
   <!-- Footer -->
-  <footer class="site-footer">
-    <p>2026 &copy; <a href="/">AI: Where Am I?</a> — A Non-Technical Guide to Understanding AI Across Fields</p>
-  </footer>
+  <Footer />
 
 </body>
 </html>
